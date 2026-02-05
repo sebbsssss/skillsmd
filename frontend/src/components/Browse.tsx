@@ -20,249 +20,375 @@ interface Skill {
 const REAL_SKILLS: Skill[] = [
   {
     id: '1',
-    title: 'Jupiter Swap Quote',
-    description: 'Get the best swap route and quote for any token pair on Solana using Jupiter Aggregator API.',
-    fullDescription: `Fetches optimal swap routes from Jupiter Aggregator (jup.ag), which aggregates liquidity across all major Solana DEXs including Raydium, Orca, Meteora, and Phoenix.
+    title: 'Weather Forecast API',
+    description: 'Get current weather and 7-day forecasts for any location worldwide using Open-Meteo.',
+    fullDescription: `Fetches weather data from Open-Meteo, a free and open-source weather API that requires no API key.
 
-**API Endpoint:** https://quote-api.jup.ag/v6/quote
+**API Endpoint:** https://api.open-meteo.com/v1/forecast
 
-**Required Headers:** None (public API)
+**Features:**
+- Current conditions (temp, humidity, wind, UV index)
+- Hourly forecasts up to 16 days
+- Daily min/max temperatures
+- Precipitation probability
+- Sunrise/sunset times
 
-**Rate Limits:** 600 requests/minute for free tier
+**Rate Limits:** Unlimited for non-commercial use
 
-This skill returns the best route, expected output amount, price impact, and all intermediate steps for complex multi-hop swaps.`,
-    category: 'DeFi',
+Supports coordinates or can be combined with geocoding for city names.`,
+    category: 'Data',
     author: 'CJta...H1s8',
-    stake: 0.5,
-    queries: 2847,
-    verifications: 7,
+    stake: 0.3,
+    queries: 4521,
+    verifications: 12,
     status: 'verified',
-    usage: 'Provide input mint, output mint, and amount (in smallest units) to get swap quote.',
+    usage: 'Provide latitude/longitude or city name to get weather forecast.',
     parameters: [
-      { name: 'inputMint', type: 'string', description: 'Token mint address to swap from (e.g., So11111111111111111111111111111111111111112 for SOL)' },
-      { name: 'outputMint', type: 'string', description: 'Token mint address to swap to (e.g., EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v for USDC)' },
-      { name: 'amount', type: 'number', description: 'Amount in lamports/smallest unit (1 SOL = 1000000000)' },
-      { name: 'slippageBps', type: 'number', description: 'Slippage tolerance in basis points (100 = 1%)' }
+      { name: 'latitude', type: 'number', description: 'Location latitude (e.g., 40.7128 for NYC)' },
+      { name: 'longitude', type: 'number', description: 'Location longitude (e.g., -74.0060 for NYC)' },
+      { name: 'daily', type: 'string', description: 'Daily variables: temperature_2m_max, precipitation_sum, etc.' },
+      { name: 'timezone', type: 'string', description: 'Timezone for times (e.g., "America/New_York")' }
     ],
     example: {
-      query: 'GET https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000000&slippageBps=50',
+      query: 'GET https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.01&current=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min&timezone=America/New_York',
       response: `{
-  "inputMint": "So111...1112",
-  "outputMint": "EPjFW...Dt1v", 
-  "inAmount": "1000000000",
-  "outAmount": "173420000",
-  "priceImpactPct": "0.0012",
-  "routePlan": [{"swapInfo": {...}, "percent": 100}]
+  "current": {
+    "temperature_2m": 18.5,
+    "weathercode": 2
+  },
+  "daily": {
+    "temperature_2m_max": [22, 24, 19, 21, 23, 20, 18],
+    "temperature_2m_min": [14, 16, 12, 13, 15, 12, 11]
+  }
 }`
     },
     createdAt: '2026-01-15'
   },
   {
     id: '2',
-    title: 'Helius RPC - Get Token Balances',
-    description: 'Fetch all SPL token balances for a Solana wallet using Helius enhanced RPC.',
-    fullDescription: `Uses Helius DAS (Digital Asset Standard) API to fetch all fungible token balances for a wallet address with metadata including token name, symbol, logo, and USD value.
+    title: 'Web Page Summarizer',
+    description: 'Extract and summarize the main content from any URL into concise bullet points.',
+    fullDescription: `Fetches a webpage, extracts the main article content (removing ads, navigation, footers), and generates a structured summary.
 
-**API Endpoint:** https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
+**Process:**
+1. Fetch URL with proper headers
+2. Parse HTML and extract main content using readability algorithms
+3. Clean and normalize text
+4. Generate summary with key points
 
-**Method:** getAssetsByOwner (DAS API)
+**Handles:**
+- News articles, blog posts, documentation
+- Paywalled content (when accessible)
+- Dynamic content (with JS rendering option)
 
-**Free Tier:** 100k credits/month
-
-Much faster than standard getTokenAccountsByOwner as it returns enriched metadata in a single call.`,
-    category: 'Infrastructure',
+Returns title, author, publish date, reading time, and bullet-point summary.`,
+    category: 'Text',
     author: '7Kv2...9xMn',
-    stake: 0.75,
-    queries: 1563,
-    verifications: 5,
+    stake: 0.5,
+    queries: 3892,
+    verifications: 8,
     status: 'verified',
-    usage: 'POST to Helius RPC with wallet address to get all token holdings.',
+    usage: 'Provide any URL to get extracted content and summary.',
     parameters: [
-      { name: 'ownerAddress', type: 'string', description: 'Solana wallet public key' },
-      { name: 'displayOptions', type: 'object', description: 'Optional: showFungible, showNativeBalance' }
+      { name: 'url', type: 'string', description: 'Full URL of the page to summarize' },
+      { name: 'maxPoints', type: 'number', description: 'Maximum bullet points in summary (default: 5)' },
+      { name: 'includeQuotes', type: 'boolean', description: 'Include key quotes from the article' }
     ],
     example: {
-      query: `POST https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
-{
-  "jsonrpc": "2.0",
-  "id": "1",
-  "method": "getAssetsByOwner",
-  "params": {
-    "ownerAddress": "CJtaoYtdxu8v32FqeDTjTBD5socEB5MBjBwgQHDhH1s8",
-    "displayOptions": { "showFungible": true }
-  }
-}`,
+      query: 'Summarize: https://example.com/article/ai-advances-2026',
       response: `{
-  "items": [
-    {
-      "interface": "FungibleToken",
-      "content": {"metadata": {"name": "USD Coin", "symbol": "USDC"}},
-      "token_info": {"balance": 1500000000, "decimals": 6}
-    }
+  "title": "Major AI Advances in 2026",
+  "author": "Jane Smith",
+  "publishDate": "2026-01-20",
+  "readingTime": "8 min",
+  "summary": [
+    "Multimodal AI models now process text, images, and video simultaneously",
+    "Agent frameworks have become the dominant paradigm for AI applications", 
+    "On-device AI runs complex models without cloud connectivity",
+    "AI coding assistants now write 40% of production code",
+    "Regulatory frameworks established in 45 countries"
+  ]
+}`
+    },
+    createdAt: '2026-01-18'
+  },
+  {
+    id: '3',
+    title: 'Timezone Converter',
+    description: 'Convert times between any timezones with DST awareness and natural language support.',
+    fullDescription: `Handles all timezone conversions with full daylight saving time awareness.
+
+**Features:**
+- Convert between any IANA timezones
+- Natural language input ("3pm Tokyo time in London")
+- DST-aware calculations
+- Business hours checker
+- Meeting time optimizer for multiple zones
+
+**Supports:**
+- All IANA timezone identifiers
+- Common abbreviations (PST, EST, GMT, JST)
+- City names for major cities
+- UTC offsets`,
+    category: 'Utilities',
+    author: '3Pq1...kL4j',
+    stake: 0.2,
+    queries: 6234,
+    verifications: 15,
+    status: 'verified',
+    usage: 'Provide time, source timezone, and target timezone.',
+    parameters: [
+      { name: 'time', type: 'string', description: 'Time to convert (ISO 8601 or natural language)' },
+      { name: 'from', type: 'string', description: 'Source timezone (e.g., "America/New_York", "PST", "Tokyo")' },
+      { name: 'to', type: 'string', description: 'Target timezone or array of timezones' }
+    ],
+    example: {
+      query: 'Convert "2026-02-05 15:00" from America/New_York to Europe/London, Asia/Tokyo',
+      response: `{
+  "input": "2026-02-05T15:00:00-05:00",
+  "conversions": [
+    {"timezone": "Europe/London", "time": "2026-02-05T20:00:00+00:00", "label": "8:00 PM GMT"},
+    {"timezone": "Asia/Tokyo", "time": "2026-02-06T05:00:00+09:00", "label": "5:00 AM JST (+1 day)"}
   ],
-  "nativeBalance": {"lamports": 5000000000}
+  "isDST": {"America/New_York": false, "Europe/London": false}
 }`
     },
     createdAt: '2026-01-20'
   },
   {
-    id: '3',
-    title: 'Solana Transaction Parser',
-    description: 'Decode and interpret Solana transaction signatures into human-readable summaries.',
-    fullDescription: `Parses raw Solana transactions to extract meaningful information: transfers, swaps, NFT mints, program interactions, fees paid, and accounts involved.
+    id: '4',
+    title: 'JSON Schema Validator',
+    description: 'Validate JSON data against schemas with detailed error messages and auto-fix suggestions.',
+    fullDescription: `Validates JSON documents against JSON Schema (draft-07 and later) with comprehensive error reporting.
 
-**Approach:**
-1. Fetch transaction via getTransaction RPC
-2. Decode instruction data using program IDLs
-3. Match against known program IDs (Jupiter, Raydium, Magic Eden, etc.)
-4. Extract token transfers from pre/post balances
+**Features:**
+- Full JSON Schema draft-07, 2019-09, 2020-12 support
+- Detailed error messages with JSON paths
+- Auto-fix suggestions for common issues
+- Schema inference from sample data
+- Multiple output formats (simple, detailed, annotated)
 
-Works with confirmed and finalized transactions. Supports all major Solana programs.`,
-    category: 'Infrastructure',
-    author: '3Pq1...kL4j',
-    stake: 1.0,
-    queries: 892,
-    verifications: 9,
+**Use Cases:**
+- API request/response validation
+- Configuration file validation
+- Data pipeline quality checks`,
+    category: 'Utilities',
+    author: '9Abc...Def1',
+    stake: 0.25,
+    queries: 2847,
+    verifications: 10,
     status: 'verified',
-    usage: 'Provide transaction signature to get decoded summary.',
+    usage: 'Provide JSON data and schema to validate.',
     parameters: [
-      { name: 'signature', type: 'string', description: 'Transaction signature (base58 encoded, 88 chars)' },
-      { name: 'cluster', type: 'string', description: 'mainnet-beta, devnet, or testnet' }
+      { name: 'data', type: 'object', description: 'JSON data to validate' },
+      { name: 'schema', type: 'object', description: 'JSON Schema to validate against' },
+      { name: 'options', type: 'object', description: 'Optional: allErrors, coerceTypes, removeAdditional' }
     ],
     example: {
-      query: 'Parse transaction: 5J7H...kL9m',
+      query: `Validate: {"name": "John", "age": "25"} against schema requiring name (string) and age (integer)`,
       response: `{
-  "type": "SWAP",
-  "protocol": "Jupiter",
-  "from": {"token": "SOL", "amount": 1.5},
-  "to": {"token": "USDC", "amount": 259.43},
-  "fee": 0.000005,
-  "slot": 245678901,
-  "timestamp": "2026-01-20T14:30:00Z"
+  "valid": false,
+  "errors": [
+    {
+      "path": "/age",
+      "message": "must be integer",
+      "actual": "string",
+      "expected": "integer"
+    }
+  ],
+  "suggestions": [
+    {"path": "/age", "fix": "Convert string '25' to integer 25"}
+  ]
 }`
     },
     createdAt: '2026-01-22'
   },
   {
-    id: '4',
-    title: 'Token Metadata Lookup',
-    description: 'Get comprehensive metadata for any SPL token including price, supply, holders, and social links.',
-    fullDescription: `Aggregates token information from multiple sources:
-- **Solana Token List:** Official verified metadata
-- **Jupiter Token API:** Price, volume, market cap
-- **Birdeye API:** Detailed analytics
-- **On-chain data:** Supply, decimals, freeze authority
+    id: '5',
+    title: 'Language Translator',
+    description: 'Translate text between 100+ languages with context awareness and formality options.',
+    fullDescription: `High-quality translation using multiple providers with automatic fallback.
 
-Returns normalized data structure regardless of source.`,
-    category: 'Data',
-    author: '9Abc...Def1',
+**Supported Languages:** 100+ including all major languages and many regional ones
+
+**Features:**
+- Context-aware translation (formal/informal)
+- Technical terminology handling
+- Preserve formatting (markdown, HTML)
+- Batch translation support
+- Language detection
+- Transliteration for non-Latin scripts
+
+**Quality:** Uses ensemble of translation models for best results.`,
+    category: 'Text',
+    author: '2Xyz...Uvw3',
     stake: 0.4,
-    queries: 3241,
-    verifications: 11,
+    queries: 5621,
+    verifications: 9,
     status: 'verified',
-    usage: 'Provide token mint address to get full metadata.',
+    usage: 'Provide text and target language for translation.',
     parameters: [
-      { name: 'mint', type: 'string', description: 'SPL token mint address' },
-      { name: 'includePrice', type: 'boolean', description: 'Include current price data (default: true)' }
+      { name: 'text', type: 'string', description: 'Text to translate' },
+      { name: 'from', type: 'string', description: 'Source language code or "auto" for detection' },
+      { name: 'to', type: 'string', description: 'Target language code (e.g., "es", "ja", "de")' },
+      { name: 'formality', type: 'string', description: 'Optional: "formal", "informal", or "auto"' }
     ],
     example: {
-      query: 'Lookup: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      query: 'Translate "Hello, how can I help you today?" to Japanese (formal)',
       response: `{
-  "name": "USD Coin",
-  "symbol": "USDC",
-  "decimals": 6,
-  "logoURI": "https://raw.githubusercontent.com/.../usdc.png",
-  "price": 0.9998,
-  "marketCap": 32500000000,
-  "supply": 32506000000,
-  "holders": 1847293,
-  "verified": true
+  "translation": "こんにちは、本日はどのようなご用件でしょうか？",
+  "transliteration": "Konnichiwa, honjitsu wa dono yō na go-yōken deshō ka?",
+  "detectedLanguage": "en",
+  "confidence": 0.98,
+  "formality": "formal"
 }`
     },
     createdAt: '2026-01-25'
   },
   {
-    id: '5',
-    title: 'Magic Eden NFT Floor Price',
-    description: 'Get real-time floor price and collection stats from Magic Eden marketplace.',
-    fullDescription: `Fetches NFT collection data from Magic Eden's public API including:
-- Current floor price in SOL
-- 24h volume and sales count
-- Listed count and total supply
-- Price history (7d, 30d)
-
-**API Endpoint:** https://api-mainnet.magiceden.dev/v2/collections/{symbol}/stats
-
-**Rate Limits:** 120 requests/minute
-
-Collection symbols can be found in Magic Eden URLs (e.g., mad_lads, okay_bears).`,
-    category: 'NFTs',
-    author: '2Xyz...Uvw3',
-    stake: 0.6,
-    queries: 1847,
-    verifications: 6,
-    status: 'verified',
-    usage: 'Provide collection symbol to get floor price and stats.',
-    parameters: [
-      { name: 'symbol', type: 'string', description: 'Collection symbol from Magic Eden (e.g., "mad_lads", "degods")' }
-    ],
-    example: {
-      query: 'GET https://api-mainnet.magiceden.dev/v2/collections/mad_lads/stats',
-      response: `{
-  "symbol": "mad_lads",
-  "floorPrice": 142500000000,
-  "listedCount": 234,
-  "volumeAll": 1250000000000000,
-  "avgPrice24hr": 148200000000
-}`
-    },
-    createdAt: '2026-02-01'
-  },
-  {
     id: '6',
-    title: 'Realms DAO Proposals',
-    description: 'Fetch active governance proposals from Solana DAOs using Realms protocol.',
-    fullDescription: `Queries the Realms governance program to list active proposals for any DAO.
+    title: 'Code Syntax Explainer',
+    description: 'Explain code snippets in plain English with line-by-line breakdowns.',
+    fullDescription: `Analyzes code in 50+ programming languages and provides clear explanations.
 
-**Program ID:** GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw
+**Supported Languages:** Python, JavaScript, TypeScript, Rust, Go, Java, C++, Ruby, SQL, and 40+ more
 
-**Data Sources:**
-- On-chain governance accounts
-- Realms API for metadata
+**Explanation Levels:**
+- Beginner: Explains basic concepts
+- Intermediate: Focuses on logic flow
+- Expert: Discusses performance and patterns
 
-Returns proposal title, description, voting status, quorum progress, and time remaining.`,
-    category: 'Governance',
+**Features:**
+- Line-by-line annotations
+- Complexity analysis (Big O)
+- Security issue detection
+- Best practice suggestions
+- Alternative implementations`,
+    category: 'Development',
     author: '5Mno...Pqr7',
     stake: 0.5,
-    queries: 728,
-    verifications: 5,
+    queries: 3156,
+    verifications: 7,
     status: 'verified',
-    usage: 'Provide DAO realm public key or name to list proposals.',
+    usage: 'Provide code snippet and optionally specify language and explanation level.',
     parameters: [
-      { name: 'realm', type: 'string', description: 'Realm public key or known name (e.g., "Marinade", "Mango")' },
-      { name: 'status', type: 'string', description: 'Filter: "active", "passed", "defeated", or "all"' }
+      { name: 'code', type: 'string', description: 'Code snippet to explain' },
+      { name: 'language', type: 'string', description: 'Programming language (auto-detected if not provided)' },
+      { name: 'level', type: 'string', description: 'Explanation level: "beginner", "intermediate", "expert"' }
     ],
     example: {
-      query: 'Get active proposals for Marinade DAO',
+      query: `Explain: const debounce = (fn, ms) => { let timeout; return (...args) => { clearTimeout(timeout); timeout = setTimeout(() => fn(...args), ms); }; };`,
       response: `{
-  "realm": "Marinade",
-  "proposals": [
-    {
-      "title": "MIP-42: Increase validator set",
-      "status": "voting",
-      "yesVotes": 12500000,
-      "noVotes": 340000,
-      "quorumPct": 67.3,
-      "endsAt": "2026-02-10T00:00:00Z"
-    }
-  ]
+  "language": "JavaScript",
+  "summary": "A debounce function that delays execution until after a pause in calls",
+  "explanation": [
+    "Creates a closure that stores a timeout reference",
+    "Returns a new function that can accept any arguments",
+    "Clears any pending timeout on each call",
+    "Sets a new timeout to call the original function after 'ms' milliseconds",
+    "Only the last call within the delay period will execute"
+  ],
+  "useCase": "Commonly used for search inputs, window resize handlers, and API calls",
+  "complexity": "O(1) per call"
 }`
     },
     createdAt: '2026-01-28'
   },
+  {
+    id: '7',
+    title: 'Unit Converter',
+    description: 'Convert between any units of measurement including length, weight, temperature, and currency.',
+    fullDescription: `Comprehensive unit conversion supporting 1000+ units across all measurement systems.
+
+**Categories:**
+- Length, Area, Volume
+- Weight, Mass
+- Temperature
+- Time, Speed
+- Digital storage
+- Currency (real-time rates)
+- Cooking measurements
+- Scientific units
+
+**Features:**
+- Real-time currency rates
+- Precision control
+- Unit aliases (lb/pound, kg/kilogram)
+- Compound units (mph, km/h)`,
+    category: 'Utilities',
+    author: '8Rst...Xyz9',
+    stake: 0.2,
+    queries: 4892,
+    verifications: 14,
+    status: 'verified',
+    usage: 'Provide value, source unit, and target unit.',
+    parameters: [
+      { name: 'value', type: 'number', description: 'Numeric value to convert' },
+      { name: 'from', type: 'string', description: 'Source unit (e.g., "kg", "miles", "celsius")' },
+      { name: 'to', type: 'string', description: 'Target unit' },
+      { name: 'precision', type: 'number', description: 'Decimal places (default: 4)' }
+    ],
+    example: {
+      query: 'Convert 72 fahrenheit to celsius',
+      response: `{
+  "input": {"value": 72, "unit": "fahrenheit"},
+  "output": {"value": 22.2222, "unit": "celsius"},
+  "formula": "(72°F − 32) × 5/9 = 22.22°C",
+  "formatted": "72°F = 22.22°C"
+}`
+    },
+    createdAt: '2026-01-30'
+  },
+  {
+    id: '8',
+    title: 'Regular Expression Builder',
+    description: 'Generate and explain regex patterns from natural language descriptions.',
+    fullDescription: `Creates regular expressions from plain English descriptions and explains existing patterns.
+
+**Features:**
+- Natural language to regex conversion
+- Regex to plain English explanation
+- Test against sample strings
+- Multiple regex flavors (JS, Python, PCRE)
+- Common pattern library
+- Optimization suggestions
+
+**Includes:**
+- Email, URL, phone validation patterns
+- Date/time formats
+- IP addresses, credit cards
+- Custom pattern generation`,
+    category: 'Development',
+    author: '4Def...Ghi2',
+    stake: 0.35,
+    queries: 2341,
+    verifications: 6,
+    status: 'verified',
+    usage: 'Describe the pattern you need or provide a regex to explain.',
+    parameters: [
+      { name: 'description', type: 'string', description: 'Natural language description of pattern needed' },
+      { name: 'testStrings', type: 'array', description: 'Optional: strings to test the pattern against' },
+      { name: 'flavor', type: 'string', description: 'Regex flavor: "javascript", "python", "pcre"' }
+    ],
+    example: {
+      query: 'Create regex for US phone numbers with optional country code',
+      response: `{
+  "pattern": "^(\\\\+1[-.\\\\s]?)?\\\\(?[0-9]{3}\\\\)?[-.\\\\s]?[0-9]{3}[-.\\\\s]?[0-9]{4}$",
+  "explanation": "Matches: +1-555-123-4567, (555) 123-4567, 555.123.4567, 5551234567",
+  "breakdown": [
+    "(\\\\+1[-.\\\\s]?)? - Optional +1 country code with separator",
+    "\\\\(?[0-9]{3}\\\\)? - Area code with optional parentheses",
+    "[-.\\\\s]? - Optional separator",
+    "[0-9]{3}[-.\\\\s]?[0-9]{4} - 7-digit local number"
+  ],
+  "flags": "i"
+}`
+    },
+    createdAt: '2026-02-01'
+  },
 ]
 
-const CATEGORIES = ['All', 'DeFi', 'Infrastructure', 'Data', 'NFTs', 'Governance']
+const CATEGORIES = ['All', 'Data', 'Text', 'Utilities', 'Development']
 
 export function Browse() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -299,7 +425,7 @@ export function Browse() {
             Browse <span className="text-brutal-purple">Skills</span>
           </h1>
           <p className="text-lg text-gray-600">
-            Real, verified knowledge for AI agents to query and use on Solana.
+            Practical, verified knowledge for AI agents — from web scraping to code analysis.
           </p>
         </div>
 
@@ -310,7 +436,7 @@ export function Browse() {
             <span className="text-2xl px-2">🔍</span>
             <input
               type="text"
-              placeholder="Search skills... (e.g., 'swap', 'NFT floor', 'token metadata')"
+              placeholder="Search skills... (e.g., 'translate', 'weather', 'regex')"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 px-4 py-3 font-medium text-lg bg-transparent outline-none"

@@ -31,7 +31,7 @@ export function AgentVision() {
             </div>
             <h3 className="font-black text-xl mb-4">You Have Expertise</h3>
             <p className="text-gray-400 leading-relaxed">
-              Maybe you know how to parse Solana transactions. Or the best way to calculate NFT rarity. Or how to query governance proposals. That knowledge has value.
+              Maybe you know the best weather API. Or how to parse PDFs reliably. Or the regex for validating emails. That knowledge has value.
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export function AgentVision() {
                 </div>
                 <div>
                   <h4 className="font-black mb-1">One Person Documents It</h4>
-                  <p className="text-gray-400 text-sm">A DeFi expert writes a skill for calculating impermanent loss. Stakes 0.5 SOL.</p>
+                  <p className="text-gray-400 text-sm">A developer writes a skill for extracting text from PDFs. Stakes 0.5 SOL.</p>
                 </div>
               </div>
               
@@ -80,7 +80,7 @@ export function AgentVision() {
                 </div>
                 <div>
                   <h4 className="font-black mb-1">Community Verifies It</h4>
-                  <p className="text-gray-400 text-sm">Other DeFi experts stake to verify accuracy. Bad skills get challenged and removed.</p>
+                  <p className="text-gray-400 text-sm">Other developers test and stake to verify accuracy. Bad skills get challenged and removed.</p>
                 </div>
               </div>
               
@@ -90,7 +90,7 @@ export function AgentVision() {
                 </div>
                 <div>
                   <h4 className="font-black mb-1">Thousands of Agents Use It</h4>
-                  <p className="text-gray-400 text-sm">Trading bots, portfolio trackers, financial advisors — all benefit from this one contribution.</p>
+                  <p className="text-gray-400 text-sm">Research assistants, document processors, legal bots — all benefit from this one contribution.</p>
                 </div>
               </div>
               
@@ -110,7 +110,7 @@ export function AgentVision() {
               <div className="space-y-4 font-mono text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Your skill:</span>
-                  <span className="text-white">IL Calculator</span>
+                  <span className="text-white">PDF Text Extractor</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Stake:</span>
