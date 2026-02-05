@@ -1,3 +1,5 @@
+import { WalletButton } from './WalletButton'
+
 interface HeaderProps {
   activeTab: 'home' | 'browse' | 'contribute'
   setActiveTab: (tab: 'home' | 'browse' | 'contribute') => void
@@ -56,19 +58,14 @@ export function Header({ activeTab, setActiveTab }: HeaderProps) {
             </a>
           </div>
 
-          {/* CTA Button */}
+          {/* Wallet Button */}
           <div className="flex items-center gap-2 lg:gap-3">
-            <button 
-              onClick={() => setActiveTab('contribute')}
-              className="px-4 py-2 lg:px-6 font-bold text-sm brutal-border-2 shadow-brutal brutal-btn bg-brutal-purple text-white"
-            >
-              Connect Wallet <span className="hidden sm:inline">→</span>
-            </button>
+            <WalletButton />
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu - simplified for now */}
+      {/* Mobile Menu */}
       <div className="lg:hidden brutal-border-2 border-l-0 border-r-0 border-t-0 bg-brutal-white">
         <div className="px-4 py-2 flex gap-2 overflow-x-auto">
           <button 
