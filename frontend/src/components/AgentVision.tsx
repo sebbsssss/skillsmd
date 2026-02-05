@@ -11,184 +11,194 @@ export function AgentVision() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-block bg-brutal-cyan text-brutal-black brutal-border-4 shadow-brutal px-4 py-2 font-mono text-sm font-bold uppercase tracking-wider mb-8">
-            🤖 The Vision
+            🌐 The Vision
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6">
-            Imagine AI Agents<br/>
-            <span className="text-brutal-cyan">That Actually Know Things.</span>
+            A Knowledge Network<br/>
+            <span className="text-brutal-cyan">Built By Everyone.</span>
           </h2>
           <p className="text-lg text-gray-400 leading-relaxed">
-            Today's AI agents are smart but disconnected. They can't access real-time blockchain data, execute trades, or verify information on-chain. skills.md changes that.
+            Wikipedia taught us that collective knowledge beats any single source. skills.md brings that same power to AI agents — a shared library of verified expertise that anyone can contribute to and everyone benefits from.
           </p>
         </div>
 
-        {/* Before/After Comparison */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-20">
-          {/* Before */}
-          <div className="brutal-border-4 border-gray-700 bg-gray-900 p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-brutal-pink brutal-border-2 flex items-center justify-center">
-                <span className="text-2xl">😕</span>
-              </div>
-              <div>
-                <h3 className="font-black text-xl text-brutal-pink">WITHOUT skills.md</h3>
-                <p className="text-xs font-mono text-gray-500">Current State of AI Agents</p>
-              </div>
+        {/* Core Concept */}
+        <div className="grid lg:grid-cols-3 gap-8 mb-20">
+          {/* Contribute */}
+          <div className="brutal-border-4 border-brutal-purple bg-gray-900 p-8 text-center">
+            <div className="w-20 h-20 mx-auto bg-brutal-purple brutal-border-4 flex items-center justify-center mb-6">
+              <span className="text-4xl">🧠</span>
             </div>
-            <div className="space-y-4">
-              <div className="brutal-border-2 border-gray-700 bg-gray-800 p-4">
-                <div className="text-xs font-mono text-gray-500 mb-2">User asks:</div>
-                <p className="text-gray-300">"What's the price of BONK token?"</p>
-              </div>
-              <div className="brutal-border-2 border-gray-700 bg-gray-800 p-4">
-                <div className="text-xs font-mono text-brutal-pink mb-2">Agent responds:</div>
-                <p className="text-gray-400 italic">"I don't have access to real-time cryptocurrency prices. My knowledge was last updated in [date]. Please check a cryptocurrency exchange for current prices."</p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-brutal-pink/20 text-brutal-pink brutal-border px-2 py-1 text-xs font-bold">❌ No real-time data</span>
-                <span className="bg-brutal-pink/20 text-brutal-pink brutal-border px-2 py-1 text-xs font-bold">❌ Can't execute</span>
-                <span className="bg-brutal-pink/20 text-brutal-pink brutal-border px-2 py-1 text-xs font-bold">❌ Outdated info</span>
-              </div>
-            </div>
+            <h3 className="font-black text-xl mb-4">You Have Expertise</h3>
+            <p className="text-gray-400 leading-relaxed">
+              Maybe you know how to parse Solana transactions. Or the best way to calculate NFT rarity. Or how to query governance proposals. That knowledge has value.
+            </p>
           </div>
 
-          {/* After */}
-          <div className="brutal-border-4 border-brutal-green bg-gray-900 p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-brutal-green brutal-border-2 flex items-center justify-center">
-                <span className="text-2xl">🚀</span>
-              </div>
-              <div>
-                <h3 className="font-black text-xl text-brutal-green">WITH skills.md</h3>
-                <p className="text-xs font-mono text-gray-500">The Future of AI Agents</p>
-              </div>
+          {/* Share */}
+          <div className="brutal-border-4 border-brutal-yellow bg-gray-900 p-8 text-center">
+            <div className="w-20 h-20 mx-auto bg-brutal-yellow brutal-border-4 flex items-center justify-center mb-6">
+              <span className="text-4xl">📚</span>
             </div>
-            <div className="space-y-4">
-              <div className="brutal-border-2 border-gray-700 bg-gray-800 p-4">
-                <div className="text-xs font-mono text-gray-500 mb-2">User asks:</div>
-                <p className="text-gray-300">"What's the price of BONK token?"</p>
-              </div>
-              <div className="brutal-border-2 border-brutal-green bg-gray-800 p-4">
-                <div className="text-xs font-mono text-brutal-green mb-2">Agent responds (using skills.md):</div>
-                <p className="text-white">"BONK is currently trading at <span className="text-brutal-green font-bold">$0.00001847</span>, up <span className="text-brutal-green">+5.2%</span> in the last 24 hours. 24h volume is $12.4M across Jupiter and Raydium."</p>
-                <div className="mt-2 text-xs font-mono text-gray-500">
-                  ⚡ Queried via skills.md • Verified by 7 stakers • 0.001 SOL fee
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-brutal-green/20 text-brutal-green brutal-border px-2 py-1 text-xs font-bold">✅ Real-time data</span>
-                <span className="bg-brutal-green/20 text-brutal-green brutal-border px-2 py-1 text-xs font-bold">✅ Verified on-chain</span>
-                <span className="bg-brutal-green/20 text-brutal-green brutal-border px-2 py-1 text-xs font-bold">✅ Paid via x402</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Use Cases */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-black text-center mb-12">What Agents Can Do With skills.md</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6 hover:border-brutal-purple transition-colors">
-              <div className="text-4xl mb-4">💱</div>
-              <h4 className="font-black mb-2">DeFi Trading</h4>
-              <p className="text-sm text-gray-400">Query token prices, execute swaps, check LP positions, and manage DeFi portfolios autonomously.</p>
-            </div>
-            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6 hover:border-brutal-purple transition-colors">
-              <div className="text-4xl mb-4">🖼️</div>
-              <h4 className="font-black mb-2">NFT Intelligence</h4>
-              <p className="text-sm text-gray-400">Track floor prices, analyze rarity, monitor listings, and even bid on NFTs based on criteria.</p>
-            </div>
-            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6 hover:border-brutal-purple transition-colors">
-              <div className="text-4xl mb-4">🏛️</div>
-              <h4 className="font-black mb-2">DAO Participation</h4>
-              <p className="text-sm text-gray-400">Monitor proposals, summarize governance activity, and help users make informed voting decisions.</p>
-            </div>
-            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6 hover:border-brutal-purple transition-colors">
-              <div className="text-4xl mb-4">🔐</div>
-              <h4 className="font-black mb-2">Security Analysis</h4>
-              <p className="text-sm text-gray-400">Audit smart contracts, check wallet risks, and verify transaction safety before signing.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Flow Diagram */}
-        <div className="brutal-border-4 border-brutal-purple bg-gray-900 p-8 lg:p-12">
-          <h3 className="text-xl font-black text-center mb-8 text-brutal-purple">How It Works: Agent → skills.md → Solana</h3>
-          
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-4">
-            {/* Step 1: User */}
-            <div className="text-center">
-              <div className="w-20 h-20 mx-auto bg-brutal-blue brutal-border-4 flex items-center justify-center mb-3">
-                <span className="text-3xl">👤</span>
-              </div>
-              <div className="font-black text-sm">User</div>
-              <div className="text-xs text-gray-500 font-mono">"Get BONK price"</div>
-            </div>
-
-            <div className="text-brutal-purple text-2xl lg:rotate-0 rotate-90">→</div>
-
-            {/* Step 2: AI Agent */}
-            <div className="text-center">
-              <div className="w-20 h-20 mx-auto bg-brutal-purple brutal-border-4 flex items-center justify-center mb-3">
-                <span className="text-3xl">🤖</span>
-              </div>
-              <div className="font-black text-sm">AI Agent</div>
-              <div className="text-xs text-gray-500 font-mono">Interprets intent</div>
-            </div>
-
-            <div className="text-brutal-purple text-2xl lg:rotate-0 rotate-90">→</div>
-
-            {/* Step 3: skills.md */}
-            <div className="text-center">
-              <div className="w-20 h-20 mx-auto bg-brutal-yellow brutal-border-4 flex items-center justify-center mb-3">
-                <span className="text-3xl text-brutal-black">📚</span>
-              </div>
-              <div className="font-black text-sm">skills.md</div>
-              <div className="text-xs text-gray-500 font-mono">Finds verified skill</div>
-            </div>
-
-            <div className="text-brutal-purple text-2xl lg:rotate-0 rotate-90">→</div>
-
-            {/* Step 4: Solana */}
-            <div className="text-center">
-              <div className="w-20 h-20 mx-auto solana-gradient brutal-border-4 flex items-center justify-center mb-3">
-                <span className="text-3xl">◎</span>
-              </div>
-              <div className="font-black text-sm">Solana</div>
-              <div className="text-xs text-gray-500 font-mono">Executes + pays</div>
-            </div>
-
-            <div className="text-brutal-purple text-2xl lg:rotate-0 rotate-90">→</div>
-
-            {/* Step 5: Response */}
-            <div className="text-center">
-              <div className="w-20 h-20 mx-auto bg-brutal-green brutal-border-4 flex items-center justify-center mb-3">
-                <span className="text-3xl">✅</span>
-              </div>
-              <div className="font-black text-sm">Response</div>
-              <div className="text-xs text-gray-500 font-mono">Verified answer</div>
-            </div>
+            <h3 className="font-black text-xl mb-4">Share It As a Skill</h3>
+            <p className="text-gray-400 leading-relaxed">
+              Write it down in a structured format. Stake SOL to signal you stand behind it. The community verifies. Now it's part of the permanent record — discoverable by any agent.
+            </p>
           </div>
 
-          <div className="mt-8 text-center">
-            <p className="text-gray-400 text-sm">
-              Every query is paid via <span className="text-brutal-cyan font-bold">x402 micropayments</span>. 
-              Skill contributors earn automatically. No invoices, no delays.
+          {/* Earn */}
+          <div className="brutal-border-4 border-brutal-green bg-gray-900 p-8 text-center">
+            <div className="w-20 h-20 mx-auto bg-brutal-green brutal-border-4 flex items-center justify-center mb-6">
+              <span className="text-4xl">💰</span>
+            </div>
+            <h3 className="font-black text-xl mb-4">Earn When It's Used</h3>
+            <p className="text-gray-400 leading-relaxed">
+              Every time an agent queries your skill, you earn micropayments automatically via x402. No invoicing. No middlemen. Your expertise generates passive income.
             </p>
           </div>
         </div>
 
+        {/* The Network Effect */}
+        <div className="brutal-border-4 border-brutal-cyan bg-gray-900 p-8 lg:p-12 mb-20">
+          <h3 className="text-2xl font-black text-center mb-8">The Power of Shared Knowledge</h3>
+          
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-brutal-cyan brutal-border-2 flex items-center justify-center flex-shrink-0">
+                  <span className="text-brutal-black font-black">1</span>
+                </div>
+                <div>
+                  <h4 className="font-black mb-1">One Person Documents It</h4>
+                  <p className="text-gray-400 text-sm">A DeFi expert writes a skill for calculating impermanent loss. Stakes 0.5 SOL.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-brutal-cyan brutal-border-2 flex items-center justify-center flex-shrink-0">
+                  <span className="text-brutal-black font-black">2</span>
+                </div>
+                <div>
+                  <h4 className="font-black mb-1">Community Verifies It</h4>
+                  <p className="text-gray-400 text-sm">Other DeFi experts stake to verify accuracy. Bad skills get challenged and removed.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-brutal-cyan brutal-border-2 flex items-center justify-center flex-shrink-0">
+                  <span className="text-brutal-black font-black">3</span>
+                </div>
+                <div>
+                  <h4 className="font-black mb-1">Thousands of Agents Use It</h4>
+                  <p className="text-gray-400 text-sm">Trading bots, portfolio trackers, financial advisors — all benefit from this one contribution.</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-brutal-green brutal-border-2 flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-black">$</span>
+                </div>
+                <div>
+                  <h4 className="font-black mb-1">Contributor Earns Forever</h4>
+                  <p className="text-gray-400 text-sm">Every query = micropayment. Quality knowledge = passive income stream.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="brutal-border-4 bg-brutal-black p-6">
+              <div className="text-xs font-mono text-brutal-cyan mb-4">// The math</div>
+              <div className="space-y-4 font-mono text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Your skill:</span>
+                  <span className="text-white">IL Calculator</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Stake:</span>
+                  <span className="text-brutal-purple">0.5 SOL</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Query fee:</span>
+                  <span className="text-white">0.001 SOL</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Queries/day:</span>
+                  <span className="text-white">~500</span>
+                </div>
+                <div className="brutal-border-2 border-brutal-green bg-brutal-green/10 p-3 mt-4">
+                  <div className="flex justify-between">
+                    <span className="text-brutal-green">Daily earnings:</span>
+                    <span className="text-brutal-green font-bold">~0.5 SOL</span>
+                  </div>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-brutal-green">Monthly:</span>
+                    <span className="text-brutal-green font-bold">~15 SOL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Why This Matters */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-black text-center mb-12">Why Build Knowledge On-Chain?</h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">🔒</div>
+              <h4 className="font-black mb-2">Permanent & Immutable</h4>
+              <p className="text-sm text-gray-400">Once verified, knowledge can't be deleted or censored. It exists forever on Solana.</p>
+            </div>
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">⚖️</div>
+              <h4 className="font-black mb-2">Skin in the Game</h4>
+              <p className="text-sm text-gray-400">Staking means contributors have economic incentive to be accurate. Bad actors lose money.</p>
+            </div>
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">🌍</div>
+              <h4 className="font-black mb-2">Globally Accessible</h4>
+              <p className="text-sm text-gray-400">Any agent, anywhere, can query the library. No gatekeepers. No API keys to manage.</p>
+            </div>
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">🤝</div>
+              <h4 className="font-black mb-2">Collaborative</h4>
+              <p className="text-sm text-gray-400">Skills can cite other skills. Knowledge builds on knowledge. The library grows smarter together.</p>
+            </div>
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">💸</div>
+              <h4 className="font-black mb-2">Fair Compensation</h4>
+              <p className="text-sm text-gray-400">No platform taking 30%. Contributors earn directly for the value they create.</p>
+            </div>
+            <div className="brutal-border-4 border-gray-700 bg-gray-900 p-6">
+              <div className="text-3xl mb-4">🤖</div>
+              <h4 className="font-black mb-2">Agent-Native</h4>
+              <p className="text-sm text-gray-400">Structured for machines to discover and consume. Not a website — a protocol.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Analogy */}
+        <div className="brutal-border-4 border-brutal-yellow bg-brutal-yellow/10 p-8 lg:p-12 text-center mb-16">
+          <div className="text-4xl mb-4">💡</div>
+          <h3 className="text-2xl font-black mb-4">Think of it like...</h3>
+          <p className="text-xl text-gray-300 leading-relaxed max-w-3xl mx-auto">
+            <span className="text-brutal-yellow font-bold">Wikipedia</span> for knowledge structure + 
+            <span className="text-brutal-yellow font-bold"> Stack Overflow</span> for community verification + 
+            <span className="text-brutal-yellow font-bold"> Substack</span> for creator monetization — 
+            but purpose-built for AI agents and powered by Solana.
+          </p>
+        </div>
+
         {/* Call to Action */}
-        <div className="mt-16 text-center">
-          <p className="text-gray-400 mb-6">
-            Be part of the knowledge layer that powers the next generation of AI agents.
+        <div className="text-center">
+          <p className="text-gray-400 mb-6 text-lg">
+            The best time to contribute was yesterday. The second best time is now.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="px-8 py-4 bg-brutal-purple text-white font-black text-lg brutal-border-4 shadow-brutal-white brutal-btn">
-              Contribute a Skill →
+              Contribute Your Expertise →
             </button>
             <button className="px-8 py-4 bg-brutal-cyan text-brutal-black font-black text-lg brutal-border-4 shadow-brutal-white brutal-btn">
-              Browse Existing Skills
+              Explore the Library
             </button>
           </div>
         </div>
