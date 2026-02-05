@@ -157,7 +157,7 @@ interface ContributeRequest {
 
 The skills.md Anchor program is deployed on Solana devnet:
 
-**Program ID:** `SkLsMDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+**Program ID:** `4Dt5vLoGPRyJMW1Q9SLDrCSH3kzvrgoSiFH7suGW1AmV`
 
 ### PDAs
 

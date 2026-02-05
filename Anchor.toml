@@ -3,10 +3,10 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-skillsmd = "SkLsMDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+skillsmd = "4Dt5vLoGPRyJMW1Q9SLDrCSH3kzvrgoSiFH7suGW1AmV"
 
 [programs.devnet]
-skillsmd = "SkLsMDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+skillsmd = "4Dt5vLoGPRyJMW1Q9SLDrCSH3kzvrgoSiFH7suGW1AmV"
 
 [registry]
 url = "https://api.apr.dev"

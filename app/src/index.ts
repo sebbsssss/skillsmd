@@ -20,7 +20,7 @@ export const connection = new Connection(
 
 // Program ID (update after deployment)
 export const PROGRAM_ID = new PublicKey(
-  process.env.PROGRAM_ID || 'SkLsMDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+  process.env.PROGRAM_ID || '4Dt5vLoGPRyJMW1Q9SLDrCSH3kzvrgoSiFH7suGW1AmV'
 );
 
 // Routes
