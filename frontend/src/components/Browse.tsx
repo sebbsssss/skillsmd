@@ -20,140 +20,249 @@ interface Skill {
 const REAL_SKILLS: Skill[] = [
   {
     id: '1',
-    title: 'Solana Token Price Lookup',
-    description: 'Get real-time price data for any SPL token on Solana using Jupiter aggregator.',
-    fullDescription: 'This skill allows AI agents to fetch current market prices for any SPL token on the Solana blockchain. It uses Jupiter\'s price API to aggregate prices across all major Solana DEXs, ensuring the most accurate and up-to-date pricing data. Supports both token mint addresses and common symbols.',
+    title: 'Jupiter Swap Quote',
+    description: 'Get the best swap route and quote for any token pair on Solana using Jupiter Aggregator API.',
+    fullDescription: `Fetches optimal swap routes from Jupiter Aggregator (jup.ag), which aggregates liquidity across all major Solana DEXs including Raydium, Orca, Meteora, and Phoenix.
+
+**API Endpoint:** https://quote-api.jup.ag/v6/quote
+
+**Required Headers:** None (public API)
+
+**Rate Limits:** 600 requests/minute for free tier
+
+This skill returns the best route, expected output amount, price impact, and all intermediate steps for complex multi-hop swaps.`,
     category: 'DeFi',
     author: 'CJta...H1s8',
     stake: 0.5,
     queries: 2847,
     verifications: 7,
     status: 'verified',
-    usage: 'Query with a token mint address or symbol to get USD price, 24h change, and volume.',
+    usage: 'Provide input mint, output mint, and amount (in smallest units) to get swap quote.',
     parameters: [
-      { name: 'token', type: 'string', description: 'Token mint address or symbol (e.g., "SOL", "BONK")' },
-      { name: 'currency', type: 'string', description: 'Output currency (default: USD)' }
+      { name: 'inputMint', type: 'string', description: 'Token mint address to swap from (e.g., So11111111111111111111111111111111111111112 for SOL)' },
+      { name: 'outputMint', type: 'string', description: 'Token mint address to swap to (e.g., EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v for USDC)' },
+      { name: 'amount', type: 'number', description: 'Amount in lamports/smallest unit (1 SOL = 1000000000)' },
+      { name: 'slippageBps', type: 'number', description: 'Slippage tolerance in basis points (100 = 1%)' }
     ],
     example: {
-      query: 'Get price of BONK token',
-      response: '{ "token": "BONK", "price": 0.00001847, "change24h": "+5.2%", "volume24h": "$12.4M" }'
+      query: 'GET https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000000&slippageBps=50',
+      response: `{
+  "inputMint": "So111...1112",
+  "outputMint": "EPjFW...Dt1v", 
+  "inAmount": "1000000000",
+  "outAmount": "173420000",
+  "priceImpactPct": "0.0012",
+  "routePlan": [{"swapInfo": {...}, "percent": 100}]
+}`
     },
     createdAt: '2026-01-15'
   },
   {
     id: '2',
-    title: 'NFT Collection Floor Price',
-    description: 'Fetch floor prices and stats for Solana NFT collections from Magic Eden and Tensor.',
-    fullDescription: 'Retrieve comprehensive NFT collection data including floor price, listed count, total volume, and holder statistics. Aggregates data from Magic Eden and Tensor marketplaces to provide the most accurate floor prices. Essential for NFT trading bots and portfolio trackers.',
-    category: 'NFTs',
+    title: 'Helius RPC - Get Token Balances',
+    description: 'Fetch all SPL token balances for a Solana wallet using Helius enhanced RPC.',
+    fullDescription: `Uses Helius DAS (Digital Asset Standard) API to fetch all fungible token balances for a wallet address with metadata including token name, symbol, logo, and USD value.
+
+**API Endpoint:** https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
+
+**Method:** getAssetsByOwner (DAS API)
+
+**Free Tier:** 100k credits/month
+
+Much faster than standard getTokenAccountsByOwner as it returns enriched metadata in a single call.`,
+    category: 'Infrastructure',
     author: '7Kv2...9xMn',
     stake: 0.75,
     queries: 1563,
     verifications: 5,
     status: 'verified',
-    usage: 'Provide collection name or symbol to retrieve floor price and collection statistics.',
+    usage: 'POST to Helius RPC with wallet address to get all token holdings.',
     parameters: [
-      { name: 'collection', type: 'string', description: 'Collection symbol or name (e.g., "mad_lads", "tensorians")' },
-      { name: 'marketplace', type: 'string', description: 'Specific marketplace or "all" for aggregated (default: all)' }
+      { name: 'ownerAddress', type: 'string', description: 'Solana wallet public key' },
+      { name: 'displayOptions', type: 'object', description: 'Optional: showFungible, showNativeBalance' }
     ],
     example: {
-      query: 'Get Mad Lads floor price',
-      response: '{ "collection": "Mad Lads", "floor": 142.5, "listed": 234, "volume24h": 1250.5, "holders": 5847 }'
+      query: `POST https://mainnet.helius-rpc.com/?api-key=YOUR_KEY
+{
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "getAssetsByOwner",
+  "params": {
+    "ownerAddress": "CJtaoYtdxu8v32FqeDTjTBD5socEB5MBjBwgQHDhH1s8",
+    "displayOptions": { "showFungible": true }
+  }
+}`,
+      response: `{
+  "items": [
+    {
+      "interface": "FungibleToken",
+      "content": {"metadata": {"name": "USD Coin", "symbol": "USDC"}},
+      "token_info": {"balance": 1500000000, "decimals": 6}
+    }
+  ],
+  "nativeBalance": {"lamports": 5000000000}
+}`
     },
     createdAt: '2026-01-20'
   },
   {
     id: '3',
-    title: 'Transaction Intent Parser',
-    description: 'Parse natural language into Solana transaction intents for swaps, transfers, and staking.',
-    fullDescription: 'Converts human-readable instructions into structured transaction intents that can be executed on Solana. Supports token swaps via Jupiter, SOL transfers, SPL token transfers, and liquid staking operations. Returns structured data ready for transaction building.',
+    title: 'Solana Transaction Parser',
+    description: 'Decode and interpret Solana transaction signatures into human-readable summaries.',
+    fullDescription: `Parses raw Solana transactions to extract meaningful information: transfers, swaps, NFT mints, program interactions, fees paid, and accounts involved.
+
+**Approach:**
+1. Fetch transaction via getTransaction RPC
+2. Decode instruction data using program IDLs
+3. Match against known program IDs (Jupiter, Raydium, Magic Eden, etc.)
+4. Extract token transfers from pre/post balances
+
+Works with confirmed and finalized transactions. Supports all major Solana programs.`,
     category: 'Infrastructure',
     author: '3Pq1...kL4j',
     stake: 1.0,
     queries: 892,
     verifications: 9,
     status: 'verified',
-    usage: 'Send a natural language instruction describing the desired transaction.',
+    usage: 'Provide transaction signature to get decoded summary.',
     parameters: [
-      { name: 'instruction', type: 'string', description: 'Natural language transaction description' },
-      { name: 'wallet', type: 'string', description: 'Source wallet address for context' }
+      { name: 'signature', type: 'string', description: 'Transaction signature (base58 encoded, 88 chars)' },
+      { name: 'cluster', type: 'string', description: 'mainnet-beta, devnet, or testnet' }
     ],
     example: {
-      query: 'Swap 10 SOL for USDC with 1% slippage',
-      response: '{ "type": "swap", "inputToken": "SOL", "outputToken": "USDC", "amount": 10, "slippage": 0.01 }'
+      query: 'Parse transaction: 5J7H...kL9m',
+      response: `{
+  "type": "SWAP",
+  "protocol": "Jupiter",
+  "from": {"token": "SOL", "amount": 1.5},
+  "to": {"token": "USDC", "amount": 259.43},
+  "fee": 0.000005,
+  "slot": 245678901,
+  "timestamp": "2026-01-20T14:30:00Z"
+}`
     },
     createdAt: '2026-01-22'
   },
   {
     id: '4',
-    title: 'Wallet Portfolio Analyzer',
-    description: 'Analyze any Solana wallet\'s holdings, PnL, and transaction history.',
-    fullDescription: 'Comprehensive wallet analysis including token holdings with current values, NFT collections owned, DeFi positions (staking, lending, LP), historical PnL calculation, and recent transaction summary. Perfect for portfolio tracking agents and wealth management tools.',
-    category: 'Analytics',
+    title: 'Token Metadata Lookup',
+    description: 'Get comprehensive metadata for any SPL token including price, supply, holders, and social links.',
+    fullDescription: `Aggregates token information from multiple sources:
+- **Solana Token List:** Official verified metadata
+- **Jupiter Token API:** Price, volume, market cap
+- **Birdeye API:** Detailed analytics
+- **On-chain data:** Supply, decimals, freeze authority
+
+Returns normalized data structure regardless of source.`,
+    category: 'Data',
     author: '9Abc...Def1',
-    stake: 0.8,
-    queries: 2156,
-    verifications: 6,
+    stake: 0.4,
+    queries: 3241,
+    verifications: 11,
     status: 'verified',
-    usage: 'Provide a wallet address to get complete portfolio breakdown and analytics.',
+    usage: 'Provide token mint address to get full metadata.',
     parameters: [
-      { name: 'wallet', type: 'string', description: 'Solana wallet address to analyze' },
-      { name: 'includeNFTs', type: 'boolean', description: 'Include NFT holdings (default: true)' },
-      { name: 'includeDeFi', type: 'boolean', description: 'Include DeFi positions (default: true)' }
+      { name: 'mint', type: 'string', description: 'SPL token mint address' },
+      { name: 'includePrice', type: 'boolean', description: 'Include current price data (default: true)' }
     ],
     example: {
-      query: 'Analyze wallet CJta...H1s8',
-      response: '{ "totalValue": "$12,450", "tokens": [...], "nfts": 12, "defiPositions": 3, "pnl30d": "+15.2%" }'
+      query: 'Lookup: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      response: `{
+  "name": "USD Coin",
+  "symbol": "USDC",
+  "decimals": 6,
+  "logoURI": "https://raw.githubusercontent.com/.../usdc.png",
+  "price": 0.9998,
+  "marketCap": 32500000000,
+  "supply": 32506000000,
+  "holders": 1847293,
+  "verified": true
+}`
     },
     createdAt: '2026-01-25'
   },
   {
     id: '5',
-    title: 'Smart Contract Auditor',
-    description: 'Analyze Solana programs for common vulnerabilities and security issues.',
-    fullDescription: 'Automated security analysis for Solana programs. Checks for common vulnerabilities including missing signer checks, improper PDA validation, integer overflow risks, reentrancy patterns, and unchecked account ownership. Returns severity-rated findings with remediation suggestions.',
-    category: 'Security',
+    title: 'Magic Eden NFT Floor Price',
+    description: 'Get real-time floor price and collection stats from Magic Eden marketplace.',
+    fullDescription: `Fetches NFT collection data from Magic Eden's public API including:
+- Current floor price in SOL
+- 24h volume and sales count
+- Listed count and total supply
+- Price history (7d, 30d)
+
+**API Endpoint:** https://api-mainnet.magiceden.dev/v2/collections/{symbol}/stats
+
+**Rate Limits:** 120 requests/minute
+
+Collection symbols can be found in Magic Eden URLs (e.g., mad_lads, okay_bears).`,
+    category: 'NFTs',
     author: '2Xyz...Uvw3',
-    stake: 2.0,
-    queries: 341,
-    verifications: 4,
-    status: 'pending',
-    usage: 'Provide program ID or source code for security analysis.',
+    stake: 0.6,
+    queries: 1847,
+    verifications: 6,
+    status: 'verified',
+    usage: 'Provide collection symbol to get floor price and stats.',
     parameters: [
-      { name: 'programId', type: 'string', description: 'Deployed program address on mainnet/devnet' },
-      { name: 'source', type: 'string', description: 'Optional: Anchor IDL or source code URL' }
+      { name: 'symbol', type: 'string', description: 'Collection symbol from Magic Eden (e.g., "mad_lads", "degods")' }
     ],
     example: {
-      query: 'Audit program 4Dt5...1AmV',
-      response: '{ "risk": "medium", "findings": 3, "critical": 0, "high": 1, "medium": 2, "details": [...] }'
+      query: 'GET https://api-mainnet.magiceden.dev/v2/collections/mad_lads/stats',
+      response: `{
+  "symbol": "mad_lads",
+  "floorPrice": 142500000000,
+  "listedCount": 234,
+  "volumeAll": 1250000000000000,
+  "avgPrice24hr": 148200000000
+}`
     },
     createdAt: '2026-02-01'
   },
   {
     id: '6',
-    title: 'DAO Governance Tracker',
-    description: 'Monitor proposals, votes, and treasury activity across Solana DAOs.',
-    fullDescription: 'Track governance activity across major Solana DAOs using Realms and custom governance programs. Get active proposals, voting status, treasury balances, and member statistics. Supports notifications for new proposals and vote deadlines.',
+    title: 'Realms DAO Proposals',
+    description: 'Fetch active governance proposals from Solana DAOs using Realms protocol.',
+    fullDescription: `Queries the Realms governance program to list active proposals for any DAO.
+
+**Program ID:** GovER5Lthms3bLBqWub97yVrMmEogzX7xNjdXpPPCVZw
+
+**Data Sources:**
+- On-chain governance accounts
+- Realms API for metadata
+
+Returns proposal title, description, voting status, quorum progress, and time remaining.`,
     category: 'Governance',
     author: '5Mno...Pqr7',
-    stake: 0.6,
+    stake: 0.5,
     queries: 728,
     verifications: 5,
     status: 'verified',
-    usage: 'Query DAO name or governance address for proposals and treasury data.',
+    usage: 'Provide DAO realm public key or name to list proposals.',
     parameters: [
-      { name: 'dao', type: 'string', description: 'DAO name or Realms governance address' },
-      { name: 'filter', type: 'string', description: 'Filter: "active", "passed", "failed", or "all"' }
+      { name: 'realm', type: 'string', description: 'Realm public key or known name (e.g., "Marinade", "Mango")' },
+      { name: 'status', type: 'string', description: 'Filter: "active", "passed", "defeated", or "all"' }
     ],
     example: {
       query: 'Get active proposals for Marinade DAO',
-      response: '{ "dao": "Marinade", "activeProposals": 2, "treasury": "$4.2M", "proposals": [...] }'
+      response: `{
+  "realm": "Marinade",
+  "proposals": [
+    {
+      "title": "MIP-42: Increase validator set",
+      "status": "voting",
+      "yesVotes": 12500000,
+      "noVotes": 340000,
+      "quorumPct": 67.3,
+      "endsAt": "2026-02-10T00:00:00Z"
+    }
+  ]
+}`
     },
     createdAt: '2026-01-28'
   },
 ]
 
-const CATEGORIES = ['All', 'DeFi', 'NFTs', 'Infrastructure', 'Analytics', 'Security', 'Governance']
+const CATEGORIES = ['All', 'DeFi', 'Infrastructure', 'Data', 'NFTs', 'Governance']
 
 export function Browse() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -190,7 +299,7 @@ export function Browse() {
             Browse <span className="text-brutal-purple">Skills</span>
           </h1>
           <p className="text-lg text-gray-600">
-            Discover verified knowledge that AI agents can query and use on Solana.
+            Real, verified knowledge for AI agents to query and use on Solana.
           </p>
         </div>
 
@@ -201,7 +310,7 @@ export function Browse() {
             <span className="text-2xl px-2">🔍</span>
             <input
               type="text"
-              placeholder="Search skills... (e.g., 'token price', 'NFT', 'swap')"
+              placeholder="Search skills... (e.g., 'swap', 'NFT floor', 'token metadata')"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1 px-4 py-3 font-medium text-lg bg-transparent outline-none"
@@ -308,7 +417,7 @@ export function Browse() {
                     {/* Full Description */}
                     <div>
                       <h4 className="font-black text-sm uppercase tracking-wider mb-2">📖 Full Description</h4>
-                      <p className="text-gray-700 leading-relaxed">{skill.fullDescription}</p>
+                      <div className="text-gray-700 leading-relaxed whitespace-pre-line">{skill.fullDescription}</div>
                     </div>
 
                     {/* Usage */}
@@ -337,13 +446,13 @@ export function Browse() {
                     <div>
                       <h4 className="font-black text-sm uppercase tracking-wider mb-3">💡 Example</h4>
                       <div className="brutal-border-4 bg-brutal-black p-4 overflow-x-auto">
-                        <div className="mb-2">
-                          <span className="text-brutal-green font-mono text-xs font-bold">// Query</span>
-                          <pre className="text-white font-mono text-sm mt-1">{skill.example.query}</pre>
+                        <div className="mb-4">
+                          <span className="text-brutal-green font-mono text-xs font-bold">// Request</span>
+                          <pre className="text-gray-300 font-mono text-sm mt-2 whitespace-pre-wrap">{skill.example.query}</pre>
                         </div>
-                        <div className="mt-4">
+                        <div>
                           <span className="text-brutal-yellow font-mono text-xs font-bold">// Response</span>
-                          <pre className="text-gray-300 font-mono text-sm mt-1 whitespace-pre-wrap">{skill.example.response}</pre>
+                          <pre className="text-gray-300 font-mono text-sm mt-2 whitespace-pre-wrap">{skill.example.response}</pre>
                         </div>
                       </div>
                     </div>
