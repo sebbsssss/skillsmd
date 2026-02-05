@@ -1,5 +1,3 @@
-import { BookOpen, Search, PenTool, Github } from 'lucide-react'
-
 interface HeaderProps {
   activeTab: 'home' | 'browse' | 'contribute'
   setActiveTab: (tab: 'home' | 'browse' | 'contribute') => void
@@ -7,88 +5,98 @@ interface HeaderProps {
 
 export function Header({ activeTab, setActiveTab }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-dark-900/80 border-b border-white/5">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-brutal-white/95 backdrop-blur-sm brutal-border-2 border-t-0 border-l-0 border-r-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <button 
             onClick={() => setActiveTab('home')}
-            className="flex items-center gap-3 hover:opacity-80 transition"
+            className="flex items-center gap-2 group"
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 lg:w-10 lg:h-10 bg-brutal-purple brutal-border-2 shadow-brutal flex items-center justify-center group-hover:bg-brutal-yellow transition-colors group-hover:rotate-12 duration-300">
+              <span className="text-brutal-white font-black text-lg lg:text-xl group-hover:text-brutal-black transition-colors">S</span>
             </div>
-            <span className="text-xl font-bold">
-              skills<span className="text-accent-purple">.md</span>
-            </span>
+            <span className="font-black text-lg lg:text-xl tracking-tight">skills.md</span>
+            <span className="hidden sm:inline-block text-[10px] font-mono font-bold bg-brutal-green text-brutal-white brutal-border-2 px-1.5 py-0.5 -mt-3 ml-1">DEVNET</span>
           </button>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
-            <NavButton 
-              active={activeTab === 'home'} 
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-1">
+            <button 
               onClick={() => setActiveTab('home')}
-              icon={<BookOpen className="w-4 h-4" />}
+              className={`px-4 py-2 font-semibold text-sm brutal-btn rounded-none transition-colors ${
+                activeTab === 'home' ? 'bg-brutal-yellow' : 'hover:bg-brutal-yellow'
+              }`}
             >
               Home
-            </NavButton>
-            <NavButton 
-              active={activeTab === 'browse'} 
+            </button>
+            <button 
               onClick={() => setActiveTab('browse')}
-              icon={<Search className="w-4 h-4" />}
+              className={`px-4 py-2 font-semibold text-sm brutal-btn rounded-none transition-colors ${
+                activeTab === 'browse' ? 'bg-brutal-yellow' : 'hover:bg-brutal-yellow'
+              }`}
             >
-              Browse
-            </NavButton>
-            <NavButton 
-              active={activeTab === 'contribute'} 
+              Browse Skills
+            </button>
+            <button 
               onClick={() => setActiveTab('contribute')}
-              icon={<PenTool className="w-4 h-4" />}
+              className={`px-4 py-2 font-semibold text-sm brutal-btn rounded-none transition-colors ${
+                activeTab === 'contribute' ? 'bg-brutal-yellow' : 'hover:bg-brutal-yellow'
+              }`}
             >
               Contribute
-            </NavButton>
-          </nav>
-
-          {/* Actions */}
-          <div className="flex items-center gap-3">
+            </button>
             <a 
               href="https://github.com/sebbsssss/skillsmd" 
               target="_blank"
-              className="p-2 rounded-lg hover:bg-white/5 transition"
+              rel="noopener noreferrer"
+              className="px-4 py-2 font-semibold text-sm hover:bg-brutal-yellow brutal-btn rounded-none transition-colors"
             >
-              <Github className="w-5 h-5" />
+              GitHub
             </a>
-            <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple to-accent-blue text-white font-medium hover:opacity-90 transition">
-              Connect Wallet
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            <button 
+              onClick={() => setActiveTab('contribute')}
+              className="px-4 py-2 lg:px-6 font-bold text-sm brutal-border-2 shadow-brutal brutal-btn bg-brutal-purple text-white"
+            >
+              Connect Wallet <span className="hidden sm:inline">→</span>
             </button>
           </div>
         </div>
       </div>
-    </header>
-  )
-}
 
-function NavButton({ 
-  children, 
-  active, 
-  onClick,
-  icon 
-}: { 
-  children: React.ReactNode
-  active: boolean
-  onClick: () => void
-  icon: React.ReactNode
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
-        active 
-          ? 'bg-white/10 text-white' 
-          : 'text-white/60 hover:text-white hover:bg-white/5'
-      }`}
-    >
-      {icon}
-      {children}
-    </button>
+      {/* Mobile Menu - simplified for now */}
+      <div className="lg:hidden brutal-border-2 border-l-0 border-r-0 border-t-0 bg-brutal-white">
+        <div className="px-4 py-2 flex gap-2 overflow-x-auto">
+          <button 
+            onClick={() => setActiveTab('home')}
+            className={`px-4 py-2 font-bold text-xs brutal-border-2 shadow-brutal brutal-btn whitespace-nowrap ${
+              activeTab === 'home' ? 'bg-brutal-yellow' : 'bg-brutal-white'
+            }`}
+          >
+            Home
+          </button>
+          <button 
+            onClick={() => setActiveTab('browse')}
+            className={`px-4 py-2 font-bold text-xs brutal-border-2 shadow-brutal brutal-btn whitespace-nowrap ${
+              activeTab === 'browse' ? 'bg-brutal-yellow' : 'bg-brutal-white'
+            }`}
+          >
+            Browse
+          </button>
+          <button 
+            onClick={() => setActiveTab('contribute')}
+            className={`px-4 py-2 font-bold text-xs brutal-border-2 shadow-brutal brutal-btn whitespace-nowrap ${
+              activeTab === 'contribute' ? 'bg-brutal-yellow' : 'bg-brutal-white'
+            }`}
+          >
+            Contribute
+          </button>
+        </div>
+      </div>
+    </nav>
   )
 }

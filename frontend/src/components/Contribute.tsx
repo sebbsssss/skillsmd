@@ -1,255 +1,251 @@
 import { useState } from 'react'
-import { PenTool, Wallet, ArrowRight, Check, Info, Loader2 } from 'lucide-react'
-
-type Category = 'fact' | 'observation' | 'pattern' | 'procedure' | 'opinion'
-
-interface FormData {
-  content: string
-  category: Category
-  tags: string
-  stakeAmount: number
-}
-
-const CATEGORIES: { value: Category; label: string; description: string }[] = [
-  { value: 'fact', label: 'Fact', description: 'Verifiable information' },
-  { value: 'observation', label: 'Observation', description: 'Something you noticed' },
-  { value: 'pattern', label: 'Pattern', description: 'Recurring trends' },
-  { value: 'procedure', label: 'Procedure', description: 'How to do something' },
-  { value: 'opinion', label: 'Opinion', description: 'Your assessment' },
-]
 
 export function Contribute() {
-  const [step, setStep] = useState<'form' | 'review' | 'success'>('form')
-  const [isWalletConnected, setIsWalletConnected] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [formData, setFormData] = useState<FormData>({
-    content: '',
-    category: 'procedure',
-    tags: '',
-    stakeAmount: 0.01
-  })
+  const [title, setTitle] = useState('')
+  const [category, setCategory] = useState('')
+  const [content, setContent] = useState('')
+  const [stakeAmount, setStakeAmount] = useState('0.1')
+  const [isConnected, setIsConnected] = useState(false)
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true)
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
-    setStep('success')
-  }
+  const CATEGORIES = ['APIs', 'Blockchain', 'Utilities', 'AI/ML', 'Development', 'Data', 'Security', 'Other']
 
-  if (!isWalletConnected) {
-    return (
-      <section className="py-16 px-6 min-h-screen">
-        <div className="max-w-2xl mx-auto">
-          <ConnectWalletPrompt onConnect={() => setIsWalletConnected(true)} />
-        </div>
-      </section>
-    )
-  }
-
-  if (step === 'success') {
-    return (
-      <section className="py-16 px-6 min-h-screen">
-        <div className="max-w-2xl mx-auto">
-          <SuccessScreen onReset={() => { setStep('form'); setFormData({ content: '', category: 'procedure', tags: '', stakeAmount: 0.01 }) }} />
-        </div>
-      </section>
-    )
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // TODO: Implement actual submission
+    alert('Wallet connection and submission coming soon!')
   }
 
   return (
-    <section className="py-16 px-6 min-h-screen">
-      <div className="max-w-2xl mx-auto">
+    <section className="min-h-screen pt-32 lg:pt-28 pb-20 noise-bg grid-bg">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Contribute Knowledge</h1>
-          <p className="text-white/60">Share what you've learned with the agent community</p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-block bg-brutal-green text-brutal-black brutal-border-4 shadow-brutal px-4 py-2 font-mono text-sm font-bold uppercase tracking-wider mb-6">
+            ✏️ Contribute
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-4">
+            Share Your <span className="text-brutal-purple">Knowledge</span>
+          </h1>
+          <p className="text-lg text-gray-600">
+            Create a skill, stake SOL to signal quality, and earn when agents use it.
+          </p>
         </div>
 
-        {step === 'form' && (
-          <div className="space-y-6">
-            {/* Content */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Knowledge Content</label>
-              <textarea
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                placeholder="Share your insight, procedure, or observation..."
-                rows={6}
-                className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-accent-purple transition resize-none"
-              />
-              <p className="text-white/40 text-xs mt-2">{formData.content.length}/2000 characters</p>
-            </div>
-
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Category</label>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
-                {CATEGORIES.map(cat => (
-                  <button
-                    key={cat.value}
-                    onClick={() => setFormData({ ...formData, category: cat.value })}
-                    className={`p-3 rounded-xl border text-center transition ${
-                      formData.category === cat.value
-                        ? 'border-accent-purple bg-accent-purple/10'
-                        : 'border-white/10 hover:border-white/20'
-                    }`}
-                  >
-                    <div className="font-medium text-sm">{cat.label}</div>
-                    <div className="text-white/40 text-xs">{cat.description}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Tags</label>
-              <input
-                type="text"
-                value={formData.tags}
-                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                placeholder="solana, defi, staking (comma separated)"
-                className="w-full px-4 py-3 rounded-xl bg-dark-800 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-accent-purple transition"
-              />
-            </div>
-
-            {/* Stake Amount */}
-            <div>
-              <label className="block text-sm font-medium mb-2">Stake Amount (SOL)</label>
-              <div className="flex items-center gap-4">
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Form */}
+          <div className="lg:col-span-2">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
+              <div className="brutal-border-4 shadow-brutal bg-white p-6">
+                <label className="block font-black text-sm uppercase tracking-wider mb-3">
+                  Skill Title *
+                </label>
                 <input
-                  type="range"
-                  min="0.01"
-                  max="1"
-                  step="0.01"
-                  value={formData.stakeAmount}
-                  onChange={(e) => setFormData({ ...formData, stakeAmount: parseFloat(e.target.value) })}
-                  className="flex-1"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="e.g., Weather API Integration"
+                  className="w-full px-4 py-3 brutal-border-2 font-medium bg-gray-50 focus:bg-white transition-colors"
+                  required
                 />
-                <div className="w-24 text-right font-mono text-accent-purple">
-                  {formData.stakeAmount.toFixed(2)} SOL
-                </div>
-              </div>
-              <div className="flex items-start gap-2 mt-2 p-3 rounded-lg bg-accent-blue/10 border border-accent-blue/20">
-                <Info className="w-4 h-4 text-accent-blue mt-0.5" />
-                <p className="text-sm text-white/60">
-                  Higher stakes signal confidence. You earn more when verified, but lose stake if challenged successfully.
+                <p className="mt-2 font-mono text-xs text-gray-400">
+                  A clear, descriptive title for your skill
                 </p>
               </div>
-            </div>
 
-            {/* Submit */}
-            <button
-              onClick={() => setStep('review')}
-              disabled={!formData.content.trim()}
-              className="w-full py-4 rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Review Contribution
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
-        )}
+              {/* Category */}
+              <div className="brutal-border-4 shadow-brutal bg-white p-6">
+                <label className="block font-black text-sm uppercase tracking-wider mb-3">
+                  Category *
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {CATEGORIES.map(cat => (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setCategory(cat)}
+                      className={`px-4 py-3 font-bold text-sm brutal-border-2 shadow-brutal brutal-btn transition-colors ${
+                        category === cat
+                          ? 'bg-brutal-purple text-white'
+                          : 'bg-white hover:bg-brutal-yellow'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-        {step === 'review' && (
-          <div className="space-y-6">
-            <div className="p-6 rounded-2xl bg-dark-800/50 border border-white/10">
-              <h3 className="font-semibold mb-4">Review Your Contribution</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <span className="text-white/40 text-sm">Category:</span>
-                  <p className="capitalize">{formData.category}</p>
-                </div>
-                <div>
-                  <span className="text-white/40 text-sm">Content:</span>
-                  <p className="text-white/80">{formData.content}</p>
-                </div>
-                <div>
-                  <span className="text-white/40 text-sm">Tags:</span>
-                  <div className="flex gap-2 mt-1">
-                    {formData.tags.split(',').map((tag, i) => (
-                      <span key={i} className="px-2 py-1 rounded-md bg-white/5 text-sm">
-                        #{tag.trim()}
-                      </span>
+              {/* Content */}
+              <div className="brutal-border-4 shadow-brutal bg-white p-6">
+                <label className="block font-black text-sm uppercase tracking-wider mb-3">
+                  Skill Content (Markdown) *
+                </label>
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder={`# My Skill
+
+## Description
+Describe what your skill does...
+
+## Usage
+\`\`\`
+Example query and response
+\`\`\`
+
+## Parameters
+- param1: description
+- param2: description
+
+## Examples
+Provide concrete examples...`}
+                  rows={15}
+                  className="w-full px-4 py-3 brutal-border-2 font-mono text-sm bg-gray-50 focus:bg-white transition-colors resize-none"
+                  required
+                />
+                <p className="mt-2 font-mono text-xs text-gray-400">
+                  Write in Markdown format. Include description, usage, parameters, and examples.
+                </p>
+              </div>
+
+              {/* Stake Amount */}
+              <div className="brutal-border-4 shadow-brutal bg-white p-6">
+                <label className="block font-black text-sm uppercase tracking-wider mb-3">
+                  Stake Amount (SOL) *
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 relative">
+                    <input
+                      type="number"
+                      value={stakeAmount}
+                      onChange={(e) => setStakeAmount(e.target.value)}
+                      min="0.1"
+                      step="0.1"
+                      className="w-full px-4 py-3 brutal-border-2 font-mono text-xl font-bold bg-gray-50 focus:bg-white transition-colors"
+                      required
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 font-mono text-gray-400">SOL</span>
+                  </div>
+                  <div className="flex gap-2">
+                    {['0.1', '0.5', '1.0', '2.0'].map(amount => (
+                      <button
+                        key={amount}
+                        type="button"
+                        onClick={() => setStakeAmount(amount)}
+                        className={`px-4 py-3 font-mono font-bold text-sm brutal-border-2 brutal-btn ${
+                          stakeAmount === amount
+                            ? 'bg-brutal-yellow shadow-brutal'
+                            : 'bg-white shadow-brutal hover:bg-brutal-yellow'
+                        }`}
+                      >
+                        {amount}
+                      </button>
                     ))}
                   </div>
                 </div>
-                <div>
-                  <span className="text-white/40 text-sm">Stake:</span>
-                  <p className="text-accent-purple font-mono">{formData.stakeAmount} SOL</p>
-                </div>
+                <p className="mt-2 font-mono text-xs text-gray-400">
+                  Higher stakes signal more confidence and earn better placement
+                </p>
+              </div>
+
+              {/* Submit */}
+              <div className="space-y-4">
+                {!isConnected ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsConnected(true)}
+                    className="w-full px-8 py-4 bg-brutal-purple text-white font-black text-lg brutal-border-4 shadow-brutal-lg brutal-btn flex items-center justify-center gap-3"
+                  >
+                    <span>🔗</span>
+                    Connect Wallet to Continue
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full px-8 py-4 bg-brutal-green text-white font-black text-lg brutal-border-4 shadow-brutal-lg brutal-btn flex items-center justify-center gap-3"
+                  >
+                    <span>🚀</span>
+                    Submit Skill ({stakeAmount} SOL)
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Preview Card */}
+            <div className="brutal-border-4 shadow-brutal-lg bg-white overflow-hidden sticky top-28">
+              <div className="bg-brutal-purple px-4 py-3">
+                <h3 className="font-black text-white text-sm uppercase tracking-wider">Preview</h3>
+              </div>
+              <div className="p-4">
+                {title || category || content ? (
+                  <div className="space-y-3">
+                    {category && (
+                      <span className="inline-block bg-brutal-purple/10 text-brutal-purple brutal-border-2 px-2 py-1 text-xs font-bold">
+                        {category}
+                      </span>
+                    )}
+                    <h4 className="text-lg font-black">{title || 'Untitled Skill'}</h4>
+                    <div className="brutal-border-2 bg-gray-50 p-3 font-mono text-xs max-h-48 overflow-y-auto">
+                      <pre className="whitespace-pre-wrap">{content || 'No content yet...'}</pre>
+                    </div>
+                    <div className="brutal-border-2 bg-brutal-yellow p-3">
+                      <div className="font-mono text-xs font-bold">Stake: {stakeAmount} SOL</div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <div className="text-4xl mb-2">📝</div>
+                    <p className="text-gray-400 text-sm">Fill out the form to see preview</p>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="flex gap-4">
-              <button
-                onClick={() => setStep('form')}
-                className="flex-1 py-4 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 transition"
-              >
-                Edit
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex-1 py-4 rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Submitting...
-                  </>
-                ) : (
-                  <>
-                    Submit & Stake
-                    <ArrowRight className="w-5 h-5" />
-                  </>
-                )}
-              </button>
+            {/* Guidelines */}
+            <div className="brutal-border-4 shadow-brutal bg-white p-6">
+              <h3 className="font-black text-sm uppercase tracking-wider mb-4">📋 Guidelines</h3>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-green font-bold">✓</span>
+                  <span>Be specific and actionable</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-green font-bold">✓</span>
+                  <span>Include working examples</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-green font-bold">✓</span>
+                  <span>Document all parameters</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-green font-bold">✓</span>
+                  <span>Use proper Markdown formatting</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-pink font-bold">✗</span>
+                  <span>No copyrighted content</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-brutal-pink font-bold">✗</span>
+                  <span>No malicious instructions</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Info Box */}
+            <div className="brutal-border-4 shadow-brutal bg-brutal-yellow p-6">
+              <h3 className="font-black text-sm uppercase tracking-wider mb-3">💡 How Staking Works</h3>
+              <p className="text-sm leading-relaxed">
+                Your stake is locked until your skill is verified by the community. If challenged and found invalid, you may lose your stake. Verified skills earn a portion of query fees.
+              </p>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </section>
-  )
-}
-
-function ConnectWalletPrompt({ onConnect }: { onConnect: () => void }) {
-  return (
-    <div className="text-center py-16">
-      <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center mx-auto mb-6">
-        <Wallet className="w-10 h-10 text-white" />
-      </div>
-      <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
-      <p className="text-white/60 mb-8 max-w-md mx-auto">
-        To contribute knowledge and stake SOL, you need to connect a Solana wallet.
-      </p>
-      <button
-        onClick={onConnect}
-        className="px-8 py-4 rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold hover:opacity-90 transition"
-      >
-        Connect Wallet
-      </button>
-    </div>
-  )
-}
-
-function SuccessScreen({ onReset }: { onReset: () => void }) {
-  return (
-    <div className="text-center py-16">
-      <div className="w-20 h-20 rounded-full bg-accent-green/20 flex items-center justify-center mx-auto mb-6">
-        <Check className="w-10 h-10 text-accent-green" />
-      </div>
-      <h2 className="text-2xl font-bold mb-2">Knowledge Submitted!</h2>
-      <p className="text-white/60 mb-8 max-w-md mx-auto">
-        Your contribution is now live. Other agents can verify it, and you'll earn rewards when it's queried.
-      </p>
-      <button
-        onClick={onReset}
-        className="px-8 py-4 rounded-xl bg-gradient-to-r from-accent-purple to-accent-blue text-white font-semibold hover:opacity-90 transition"
-      >
-        Contribute More
-      </button>
-    </div>
   )
 }

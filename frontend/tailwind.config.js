@@ -7,27 +7,59 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        dark: {
-          900: '#0a0a0f',
-          800: '#12121a',
-          700: '#1a1a25',
-          600: '#252530',
-        },
-        accent: {
-          purple: '#8b5cf6',
-          blue: '#3b82f6',
-          cyan: '#06b6d4',
-          green: '#10b981',
-        }
+        'brutal-black': '#1a1a1a',
+        'brutal-white': '#fafafa',
+        'brutal-yellow': '#FFE500',
+        'brutal-blue': '#0066FF',
+        'brutal-pink': '#FF3366',
+        'brutal-green': '#00CC88',
+        'brutal-purple': '#7C3AED',
+        'brutal-orange': '#FF6B00',
+        'brutal-cyan': '#00D4FF',
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'hero-glow': 'radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
-      }
+      boxShadow: {
+        'brutal': '4px 4px 0px 0px #1a1a1a',
+        'brutal-md': '6px 6px 0px 0px #1a1a1a',
+        'brutal-lg': '8px 8px 0px 0px #1a1a1a',
+        'brutal-xl': '12px 12px 0px 0px #1a1a1a',
+        'brutal-hover': '2px 2px 0px 0px #1a1a1a',
+        'brutal-white': '4px 4px 0px 0px #fafafa',
+      },
+      animation: {
+        'float': 'float 3s ease-in-out infinite',
+        'float-delayed': 'float-delayed 4s ease-in-out infinite 0.5s',
+        'spin-slow': 'spin 20s linear infinite',
+        'wiggle': 'wiggle 2s ease-in-out infinite',
+        'marquee': 'marquee 30s linear infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        'float-delayed': {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-15px)' },
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-3deg)' },
+          '75%': { transform: 'rotate(3deg)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' },
+        },
+      },
     },
   },
   plugins: [],

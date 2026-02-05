@@ -1,191 +1,240 @@
 import { useState } from 'react'
-import { Search, Filter, CheckCircle, Clock, AlertTriangle, TrendingUp } from 'lucide-react'
 
-interface KnowledgeEntry {
-  id: number
+interface Skill {
+  id: string
   title: string
-  content: string
+  description: string
   category: string
-  tags: string[]
-  verifications: number
+  author: string
+  stake: number
   queries: number
-  contributor: string
-  status: 'active' | 'pending' | 'challenged'
+  verifications: number
+  status: 'verified' | 'pending' | 'challenged'
 }
 
-const MOCK_ENTRIES: KnowledgeEntry[] = [
+const MOCK_SKILLS: Skill[] = [
   {
-    id: 1,
-    title: "Safe SOL Staking Strategy",
-    content: "When staking SOL, choose validators with >95% uptime and <10% commission. Diversify across 3-5 validators to minimize risk...",
-    category: "procedure",
-    tags: ["solana", "staking", "defi"],
-    verifications: 47,
-    queries: 1234,
-    contributor: "7xK3...9mP",
-    status: "active"
+    id: '1',
+    title: 'Weather API Integration',
+    description: 'Get current weather and forecasts for any location worldwide using multiple data sources.',
+    category: 'APIs',
+    author: 'CJta...H1s8',
+    stake: 0.5,
+    queries: 1247,
+    verifications: 5,
+    status: 'verified'
   },
   {
-    id: 2,
-    title: "Jupiter Aggregator Best Practices",
-    content: "Jupiter aggregates liquidity from 20+ DEXes. For large swaps (>$10k), use the limit order feature to avoid slippage...",
-    category: "procedure",
-    tags: ["jupiter", "defi", "trading"],
-    verifications: 32,
+    id: '2',
+    title: 'Solana Transaction Parser',
+    description: 'Parse and decode Solana transaction data including program instructions and account changes.',
+    category: 'Blockchain',
+    author: '7Kv2...9xMn',
+    stake: 1.0,
     queries: 892,
-    contributor: "4aB2...kLm",
-    status: "active"
+    verifications: 8,
+    status: 'verified'
   },
   {
-    id: 3,
-    title: "Memecoin Risk Assessment Pattern",
-    content: "When evaluating memecoins: check holder distribution (top 10 should hold <30%), verify liquidity lock, analyze social velocity...",
-    category: "pattern",
-    tags: ["memecoin", "risk", "analysis"],
-    verifications: 18,
-    queries: 567,
-    contributor: "9pQ7...xYz",
-    status: "pending"
+    id: '3',
+    title: 'JSON Schema Validator',
+    description: 'Validate JSON data against schemas with detailed error reporting and suggestions.',
+    category: 'Utilities',
+    author: '3Pq1...kL4j',
+    stake: 0.25,
+    queries: 2341,
+    verifications: 12,
+    status: 'verified'
   },
   {
-    id: 4,
-    title: "Kamino Yield Optimization",
-    content: "Kamino's multiply vaults offer leveraged yield. Optimal strategy: use 2-3x leverage on stable pairs, monitor health factor...",
-    category: "procedure",
-    tags: ["kamino", "yield", "defi"],
-    verifications: 28,
-    queries: 445,
-    contributor: "2cD5...nOp",
-    status: "active"
-  }
+    id: '4',
+    title: 'Text Summarization',
+    description: 'Summarize long-form content into concise bullet points or paragraphs.',
+    category: 'AI/ML',
+    author: '9Abc...Def1',
+    stake: 0.75,
+    queries: 456,
+    verifications: 3,
+    status: 'pending'
+  },
+  {
+    id: '5',
+    title: 'Code Review Assistant',
+    description: 'Analyze code for best practices, security issues, and performance improvements.',
+    category: 'Development',
+    author: '2Xyz...Uvw3',
+    stake: 2.0,
+    queries: 0,
+    verifications: 1,
+    status: 'challenged'
+  },
 ]
 
-const CATEGORIES = ['all', 'fact', 'observation', 'pattern', 'procedure', 'opinion']
+const CATEGORIES = ['All', 'APIs', 'Blockchain', 'Utilities', 'AI/ML', 'Development']
 
 export function Browse() {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
-  const filteredEntries = MOCK_ENTRIES.filter(entry => {
-    const matchesSearch = entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         entry.content.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || entry.category === selectedCategory
+  const filteredSkills = MOCK_SKILLS.filter(skill => {
+    const matchesSearch = skill.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         skill.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = selectedCategory === 'All' || skill.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
+  const getStatusBadge = (status: Skill['status']) => {
+    switch (status) {
+      case 'verified':
+        return <span className="bg-brutal-green text-white brutal-border-2 px-2 py-1 text-xs font-bold">✅ VERIFIED</span>
+      case 'pending':
+        return <span className="bg-brutal-yellow text-brutal-black brutal-border-2 px-2 py-1 text-xs font-bold">⏳ PENDING</span>
+      case 'challenged':
+        return <span className="bg-brutal-pink text-white brutal-border-2 px-2 py-1 text-xs font-bold">⚠️ CHALLENGED</span>
+    }
+  }
+
   return (
-    <section className="py-16 px-6 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+    <section className="min-h-screen pt-32 lg:pt-28 pb-20 noise-bg grid-bg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Browse Knowledge</h1>
-          <p className="text-white/60">Explore what AI agents have learned</p>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-block bg-brutal-blue text-white brutal-border-4 shadow-brutal px-4 py-2 font-mono text-sm font-bold uppercase tracking-wider mb-6">
+            📚 Skill Registry
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-4">
+            Browse <span className="text-brutal-purple">Skills</span>
+          </h1>
+          <p className="text-lg text-gray-600">
+            Discover verified knowledge that AI agents can query and use.
+          </p>
         </div>
 
-        {/* Search and Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+        {/* Search & Filters */}
+        <div className="mb-8 space-y-4">
+          {/* Search Bar */}
+          <div className="brutal-border-4 shadow-brutal bg-white p-2 flex items-center gap-2">
+            <span className="text-2xl px-2">🔍</span>
             <input
               type="text"
-              placeholder="Search knowledge..."
+              placeholder="Search skills..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl bg-dark-800 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-accent-purple transition"
+              className="flex-1 px-4 py-3 font-medium text-lg bg-transparent outline-none"
             />
+            <button className="px-6 py-3 bg-brutal-purple text-white font-bold brutal-border-2 shadow-brutal brutal-btn">
+              Search
+            </button>
           </div>
-          <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-white/40" />
-            <div className="flex gap-2">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition capitalize ${
-                    selectedCategory === cat
-                      ? 'bg-accent-purple text-white'
-                      : 'bg-dark-800 text-white/60 hover:text-white'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
+
+          {/* Category Filters */}
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIES.map(category => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 font-bold text-sm brutal-border-2 shadow-brutal brutal-btn transition-colors ${
+                  selectedCategory === category
+                    ? 'bg-brutal-yellow'
+                    : 'bg-white hover:bg-brutal-yellow'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Results */}
-        <div className="grid gap-4">
-          {filteredEntries.map(entry => (
-            <KnowledgeCard key={entry.id} entry={entry} />
+        {/* Results Count */}
+        <div className="mb-6 flex items-center justify-between">
+          <p className="font-mono text-sm text-gray-500">
+            Showing <span className="font-bold text-brutal-black">{filteredSkills.length}</span> skills
+          </p>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs text-gray-400">Sort by:</span>
+            <button className="px-3 py-1 font-mono text-xs brutal-border-2 bg-white shadow-brutal-hover brutal-btn">
+              Queries ↓
+            </button>
+          </div>
+        </div>
+
+        {/* Skills Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredSkills.map(skill => (
+            <div
+              key={skill.id}
+              className="brutal-card brutal-border-4 shadow-brutal-lg bg-white overflow-hidden cursor-pointer"
+            >
+              {/* Card Header */}
+              <div className="p-6 pb-4">
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <span className="bg-brutal-purple/10 text-brutal-purple brutal-border-2 px-2 py-1 text-xs font-bold">
+                    {skill.category}
+                  </span>
+                  {getStatusBadge(skill.status)}
+                </div>
+                <h3 className="text-xl font-black mb-2">{skill.title}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">{skill.description}</p>
+              </div>
+
+              {/* Card Stats */}
+              <div className="px-6 pb-4">
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="brutal-border-2 bg-gray-50 p-2 text-center">
+                    <div className="text-lg font-black text-brutal-purple">{skill.stake}</div>
+                    <div className="text-[10px] font-mono text-gray-500">SOL Staked</div>
+                  </div>
+                  <div className="brutal-border-2 bg-gray-50 p-2 text-center">
+                    <div className="text-lg font-black text-brutal-blue">{skill.queries.toLocaleString()}</div>
+                    <div className="text-[10px] font-mono text-gray-500">Queries</div>
+                  </div>
+                  <div className="brutal-border-2 bg-gray-50 p-2 text-center">
+                    <div className="text-lg font-black text-brutal-green">{skill.verifications}</div>
+                    <div className="text-[10px] font-mono text-gray-500">Verified</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Footer */}
+              <div className="brutal-border-2 border-l-0 border-r-0 border-b-0 bg-gray-50 px-6 py-3 flex items-center justify-between">
+                <div className="font-mono text-xs text-gray-500">
+                  by <span className="font-bold text-brutal-black">{skill.author}</span>
+                </div>
+                <button className="px-4 py-2 bg-brutal-purple text-white font-bold text-xs brutal-border-2 shadow-brutal brutal-btn">
+                  View →
+                </button>
+              </div>
+            </div>
           ))}
         </div>
 
-        {filteredEntries.length === 0 && (
-          <div className="text-center py-16">
-            <p className="text-white/40">No knowledge entries found</p>
+        {/* Empty State */}
+        {filteredSkills.length === 0 && (
+          <div className="brutal-border-4 shadow-brutal-lg bg-white p-12 text-center">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-black mb-2">No skills found</h3>
+            <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
+            <button
+              onClick={() => {
+                setSearchQuery('')
+                setSelectedCategory('All')
+              }}
+              className="px-6 py-3 bg-brutal-yellow font-bold brutal-border-4 shadow-brutal brutal-btn"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
+        {/* Load More */}
+        {filteredSkills.length > 0 && (
+          <div className="mt-12 text-center">
+            <button className="px-8 py-4 bg-brutal-black text-white font-bold brutal-border-4 shadow-brutal-lg brutal-btn">
+              Load More Skills
+            </button>
           </div>
         )}
       </div>
     </section>
-  )
-}
-
-function KnowledgeCard({ entry }: { entry: KnowledgeEntry }) {
-  const statusConfig = {
-    active: { icon: <CheckCircle className="w-4 h-4" />, color: 'text-accent-green', label: 'Verified' },
-    pending: { icon: <Clock className="w-4 h-4" />, color: 'text-yellow-500', label: 'Pending' },
-    challenged: { icon: <AlertTriangle className="w-4 h-4" />, color: 'text-red-500', label: 'Challenged' }
-  }
-
-  const status = statusConfig[entry.status]
-
-  return (
-    <div className="p-6 rounded-2xl bg-dark-800/50 border border-white/5 card-hover">
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <div>
-          <h3 className="text-lg font-semibold mb-1">{entry.title}</h3>
-          <div className="flex items-center gap-3 text-sm">
-            <span className={`flex items-center gap-1 ${status.color}`}>
-              {status.icon}
-              {status.label}
-            </span>
-            <span className="text-white/40">•</span>
-            <span className="text-white/40 capitalize">{entry.category}</span>
-            <span className="text-white/40">•</span>
-            <span className="text-white/40">by {entry.contributor}</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 text-sm">
-          <div className="text-center">
-            <div className="flex items-center gap-1 text-accent-green">
-              <CheckCircle className="w-4 h-4" />
-              {entry.verifications}
-            </div>
-            <div className="text-white/40 text-xs">verifications</div>
-          </div>
-          <div className="text-center">
-            <div className="flex items-center gap-1 text-accent-cyan">
-              <TrendingUp className="w-4 h-4" />
-              {entry.queries}
-            </div>
-            <div className="text-white/40 text-xs">queries</div>
-          </div>
-        </div>
-      </div>
-      
-      <p className="text-white/60 text-sm mb-4 line-clamp-2">{entry.content}</p>
-      
-      <div className="flex items-center gap-2">
-        {entry.tags.map(tag => (
-          <span 
-            key={tag}
-            className="px-2 py-1 rounded-md bg-white/5 text-white/60 text-xs"
-          >
-            #{tag}
-          </span>
-        ))}
-      </div>
-    </div>
   )
 }

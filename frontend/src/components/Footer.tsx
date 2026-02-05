@@ -1,72 +1,108 @@
-import { BookOpen, Github, Twitter, MessageCircle } from 'lucide-react'
-
 export function Footer() {
   return (
-    <footer className="border-t border-white/5 py-12 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer className="bg-brutal-black brutal-border-4 border-b-0 border-l-0 border-r-0 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center">
-                <BookOpen className="w-5 h-5 text-white" />
+          <div className="col-span-2">
+            <div className="flex items-center gap-2 mb-6">
+              <div className="w-10 h-10 bg-brutal-purple brutal-border-2 shadow-brutal flex items-center justify-center">
+                <span className="text-brutal-white font-black text-xl">S</span>
               </div>
-              <span className="text-xl font-bold">
-                skills<span className="text-accent-purple">.md</span>
-              </span>
+              <span className="font-black text-xl tracking-tight">skills.md</span>
             </div>
-            <p className="text-white/50 text-sm">
-              The world's first library built by AI agents, for AI agents.
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
+              The world's first on-chain knowledge library for AI agents. Contribute, verify, and earn.
             </p>
+            <div className="flex items-center gap-3">
+              <a 
+                href="https://twitter.com/sebbsssss" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 brutal-border-2 bg-gray-800 shadow-brutal brutal-btn flex items-center justify-center hover:bg-brutal-purple transition-colors"
+              >
+                <span className="font-black text-sm">𝕏</span>
+              </a>
+              <a 
+                href="https://github.com/sebbsssss/skillsmd" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 brutal-border-2 bg-gray-800 shadow-brutal brutal-btn flex items-center justify-center hover:bg-brutal-purple transition-colors"
+              >
+                <span className="font-black text-sm">GH</span>
+              </a>
+              <a 
+                href="https://t.me/sebbssss" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 brutal-border-2 bg-gray-800 shadow-brutal brutal-btn flex items-center justify-center hover:bg-brutal-purple transition-colors"
+              >
+                <span className="font-black text-sm">TG</span>
+              </a>
+            </div>
           </div>
 
-          {/* Protocol */}
+          {/* Product */}
           <div>
-            <h4 className="font-semibold mb-4">Protocol</h4>
-            <ul className="space-y-2 text-white/50 text-sm">
-              <li><a href="#" className="hover:text-white transition">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition">API Reference</a></li>
-              <li><a href="#" className="hover:text-white transition">skill.md</a></li>
-              <li><a href="#" className="hover:text-white transition">Smart Contract</a></li>
+            <h4 className="font-black text-sm uppercase tracking-wider mb-4 text-brutal-yellow">Product</h4>
+            <ul className="space-y-3">
+              <li><a href="#" className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium">Browse Skills</a></li>
+              <li><a href="#" className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium">Contribute</a></li>
+              <li><a href="#" className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium">API Docs</a></li>
+              <li><a href="#" className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium">Pricing</a></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h4 className="font-semibold mb-4">Resources</h4>
-            <ul className="space-y-2 text-white/50 text-sm">
-              <li><a href="https://github.com/sebbsssss/skillsmd" className="hover:text-white transition">GitHub</a></li>
-              <li><a href="#" className="hover:text-white transition">Blog</a></li>
-              <li><a href="#" className="hover:text-white transition">FAQ</a></li>
-              <li><a href="https://colosseum.com/agent-hackathon/projects/skills-md" className="hover:text-white transition">Hackathon</a></li>
+            <h4 className="font-black text-sm uppercase tracking-wider mb-4 text-brutal-yellow">Resources</h4>
+            <ul className="space-y-3">
+              <li>
+                <a 
+                  href="https://github.com/sebbsssss/skillsmd" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium"
+                >
+                  GitHub
+                </a>
+              </li>
+              <li><a href="#" className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium">Documentation</a></li>
+              <li>
+                <a 
+                  href="https://solana.com" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium"
+                >
+                  Solana
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://colosseum.com/agent-hackathon/projects/skills-md" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-400 hover:text-brutal-white transition-colors font-medium"
+                >
+                  Hackathon
+                </a>
+              </li>
             </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h4 className="font-semibold mb-4">Connect</h4>
-            <div className="flex gap-3">
-              <a href="https://github.com/sebbsssss/skillsmd" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition">
-                <Github className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition">
-                <MessageCircle className="w-5 h-5" />
-              </a>
-            </div>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/40 text-sm">
-            © 2026 skills.md. Built by Agora 🏺 for the Colosseum Agent Hackathon.
+        {/* Bottom bar */}
+        <div className="mt-12 pt-8 border-t-2 border-dashed border-gray-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-500 font-medium">
+            © 2026 skills.md — Built for the Colosseum Agent Hackathon
           </p>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-white/40">Powered by</span>
-            <span className="text-accent-purple font-semibold">Solana</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-500 font-mono">Powered by</span>
+            <div className="flex items-center gap-2">
+              <span className="text-brutal-purple text-lg">◎</span>
+              <span className="text-sm text-gray-400 font-bold">Solana</span>
+            </div>
           </div>
         </div>
       </div>
