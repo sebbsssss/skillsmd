@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { AgentVision } from './components/AgentVision'
+import { StakingEconomics } from './components/StakingEconomics'
 import { HowItWorks } from './components/HowItWorks'
 import { Browse } from './components/Browse'
 import { Contribute } from './components/Contribute'
@@ -18,6 +19,7 @@ function App() {
         <>
           <Hero onGetStarted={() => setActiveTab('contribute')} />
           <AgentVision />
+          <StakingEconomics />
           <HowItWorks />
         </>
       )}

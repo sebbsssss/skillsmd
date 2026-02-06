@@ -79,17 +79,17 @@ export function Hero({ onGetStarted }: HeroProps) {
 
             {/* Stats */}
             <div className="flex items-center gap-4 pt-4">
-              <div className="brutal-border-2 bg-brutal-yellow px-4 py-2">
+              <div className="brutal-border-4 bg-brutal-yellow px-4 py-2 shadow-brutal">
                 <div className="text-2xl font-black">0</div>
-                <div className="text-xs font-mono text-gray-700">Skills</div>
+                <div className="text-xs font-mono font-bold">Skills</div>
               </div>
-              <div className="brutal-border-2 bg-brutal-green px-4 py-2">
-                <div className="text-2xl font-black text-white">0</div>
-                <div className="text-xs font-mono text-green-900">Verified</div>
+              <div className="brutal-border-4 bg-brutal-green px-4 py-2 shadow-brutal">
+                <div className="text-2xl font-black">0</div>
+                <div className="text-xs font-mono font-bold">Verified</div>
               </div>
-              <div className="brutal-border-2 bg-brutal-blue px-4 py-2">
+              <div className="brutal-border-4 bg-brutal-blue px-4 py-2 shadow-brutal">
                 <div className="text-2xl font-black text-white">0</div>
-                <div className="text-xs font-mono text-blue-100">Queries</div>
+                <div className="text-xs font-mono font-bold text-white">Queries</div>
               </div>
             </div>
           </div>
