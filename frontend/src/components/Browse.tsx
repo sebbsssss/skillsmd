@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
 
 interface Skill {
   id: string
@@ -394,6 +396,48 @@ export function Browse() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
   const [expandedSkill, setExpandedSkill] = useState<string | null>(null)
+  const [queryModal, setQueryModal] = useState<Skill | null>(null)
+  const [queryResult, setQueryResult] = useState<string | null>(null)
+  const [isQuerying, setIsQuerying] = useState(false)
+  const [notification, setNotification] = useState<string | null>(null)
+  
+  const { publicKey, connected } = useWallet()
+  const { setVisible } = useWalletModal()
+
+  const showNotification = useCallback((message: string) => {
+    setNotification(message)
+    setTimeout(() => setNotification(null), 3000)
+  }, [])
+
+  const handleQuery = useCallback((skill: Skill) => {
+    setQueryModal(skill)
+    setQueryResult(null)
+  }, [])
+
+  const executeQuery = useCallback(async () => {
+    if (!queryModal) return
+    
+    setIsQuerying(true)
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setQueryResult(queryModal.example.response)
+    setIsQuerying(false)
+  }, [queryModal])
+
+  const handleVerify = useCallback((skill: Skill) => {
+    if (!connected) {
+      setVisible(true)
+      showNotification('Connect wallet to verify skills')
+      return
+    }
+    // Simulate verification
+    showNotification(`✅ Verification submitted for "${skill.title}" (0.1 SOL staked)`)
+  }, [connected, setVisible, showNotification])
+
+  const handleCopyId = useCallback((skill: Skill) => {
+    navigator.clipboard.writeText(skill.id)
+    showNotification(`📋 Copied skill ID: ${skill.id}`)
+  }, [showNotification])
 
   const filteredSkills = REAL_SKILLS.filter(skill => {
     const matchesSearch = skill.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -585,13 +629,22 @@ export function Browse() {
 
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-3 pt-4">
-                      <button className="px-6 py-3 bg-brutal-green text-white font-bold brutal-border-4 shadow-brutal brutal-btn">
+                      <button 
+                        onClick={() => handleQuery(skill)}
+                        className="px-6 py-3 bg-brutal-green font-bold brutal-border-4 shadow-brutal brutal-btn"
+                      >
                         🔗 Query This Skill
                       </button>
-                      <button className="px-6 py-3 bg-brutal-purple text-white font-bold brutal-border-4 shadow-brutal brutal-btn">
+                      <button 
+                        onClick={() => handleVerify(skill)}
+                        className="px-6 py-3 bg-brutal-purple text-white font-bold brutal-border-4 shadow-brutal brutal-btn"
+                      >
                         ✅ Verify (Stake 0.1 SOL)
                       </button>
-                      <button className="px-6 py-3 bg-white font-bold brutal-border-4 shadow-brutal brutal-btn">
+                      <button 
+                        onClick={() => handleCopyId(skill)}
+                        className="px-6 py-3 bg-white font-bold brutal-border-4 shadow-brutal brutal-btn"
+                      >
                         📋 Copy Skill ID
                       </button>
                     </div>
@@ -620,6 +673,87 @@ export function Browse() {
           </div>
         )}
       </div>
+
+      {/* Query Modal */}
+      {queryModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="brutal-border-4 shadow-brutal-xl bg-white max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="bg-brutal-green p-4 brutal-border-4 border-t-0 border-l-0 border-r-0 flex items-center justify-between">
+              <h3 className="font-black text-lg">🔗 Query: {queryModal.title}</h3>
+              <button 
+                onClick={() => setQueryModal(null)}
+                className="w-8 h-8 bg-white brutal-border-2 font-black brutal-btn"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="font-bold text-sm block mb-2">Example Query</label>
+                <div className="brutal-border-2 bg-gray-100 p-3 font-mono text-sm overflow-x-auto">
+                  {queryModal.example.query}
+                </div>
+              </div>
+
+              {!queryResult ? (
+                <button
+                  onClick={executeQuery}
+                  disabled={isQuerying}
+                  className={`w-full py-4 font-black text-lg brutal-border-4 shadow-brutal brutal-btn ${
+                    isQuerying 
+                      ? 'bg-brutal-yellow cursor-wait' 
+                      : 'bg-brutal-purple text-white'
+                  }`}
+                >
+                  {isQuerying ? '⏳ Querying...' : '⚡ Execute Query (0.001 SOL)'}
+                </button>
+              ) : (
+                <div>
+                  <label className="font-bold text-sm block mb-2">✅ Response</label>
+                  <div className="brutal-border-4 bg-brutal-black p-4 overflow-x-auto">
+                    <pre className="text-brutal-green font-mono text-sm whitespace-pre-wrap">{queryResult}</pre>
+                  </div>
+                  <div className="mt-4 flex gap-2">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(queryResult)
+                        showNotification('📋 Response copied!')
+                      }}
+                      className="flex-1 py-3 font-bold brutal-border-4 shadow-brutal brutal-btn bg-white"
+                    >
+                      📋 Copy Response
+                    </button>
+                    <button
+                      onClick={() => setQueryResult(null)}
+                      className="flex-1 py-3 font-bold brutal-border-4 shadow-brutal brutal-btn bg-brutal-yellow"
+                    >
+                      🔄 Query Again
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs font-mono text-gray-500 text-center">
+                {connected 
+                  ? `Connected: ${publicKey?.toBase58().slice(0,8)}...` 
+                  : 'Demo mode — connect wallet for real queries'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Notification Toast */}
+      {notification && (
+        <div className="fixed bottom-6 right-6 z-50 animate-bounce">
+          <div className="brutal-border-4 shadow-brutal-lg bg-brutal-yellow px-6 py-4 font-bold">
+            {notification}
+          </div>
+        </div>
+      )}
     </section>
   )
 }
